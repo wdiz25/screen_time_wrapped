@@ -1,0 +1,537 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart' as intl;
+import '../../providers/usage_data_provider.dart';
+import '../../models/usage_report.dart';
+import '../../theme/slide_colors.dart';
+import '../../theme/typography.dart';
+import '../../widgets/starburst_shape.dart';
+import '../../widgets/brain_score_gauge.dart';
+import '../wrapped/wrapped_screen.dart';
+import '../settings/settings_screen.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selected = 0;
+  static const _labels = ['Day', 'Week', 'Month', 'Year'];
+  static const _periodLabels = ['Today', 'This Week', 'This Month', 'This Year'];
+
+  UsageReport? _activeReport(UsageDataProvider p) => switch (_selected) {
+    0 => p.daily,
+    1 => p.weekly,
+    2 => p.monthly,
+    _ => p.yearly,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadData());
+  }
+
+  Future<void> _loadData() async {
+    final provider = context.read<UsageDataProvider>();
+    if (provider.state == LoadState.idle || provider.state == LoadState.error) {
+      await provider.loadAll();
+    }
+  }
+
+  String _greeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: SlideColors.yellow,
+      body: SafeArea(
+        child: Column(
+          children: [
+            _Header(onSettings: () async {
+              final dataProvider = context.read<UsageDataProvider>();
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+              dataProvider.invalidate();
+              await dataProvider.loadAll();
+            }),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () => context.read<UsageDataProvider>().loadAll(),
+                child: Consumer<UsageDataProvider>(
+                  builder: (context, dataProvider, _) {
+                    if (dataProvider.isLoading) {
+                      return const Center(child: CircularProgressIndicator(color: Colors.black));
+                    }
+                    final activeReport = _activeReport(dataProvider);
+                    return ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      children: [
+                        const SizedBox(height: 8),
+                        Text(
+                          _greeting(),
+                          style: AppTypography.body(size: 18, weight: FontWeight.w500),
+                        ),
+                        Text(
+                          intl.DateFormat('EEEE, MMMM d').format(DateTime.now()),
+                          style: AppTypography.body(size: 14, color: const Color(0xFF555555)),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: List.generate(_labels.length, (i) {
+                            final active = i == _selected;
+                            return Padding(
+                              padding: EdgeInsets.only(right: i < _labels.length - 1 ? 8 : 0),
+                              child: GestureDetector(
+                                onTap: () => setState(() => _selected = i),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: active ? Colors.black : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.black, width: 1.5),
+                                  ),
+                                  child: Text(
+                                    _labels[i],
+                                    style: AppTypography.label(
+                                      size: 13,
+                                      color: active ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                        const SizedBox(height: 20),
+                        if (activeReport != null) ...[
+                          _QuickStatsRow(
+                            report: activeReport,
+                            periodLabel: _periodLabels[_selected],
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                        _TopAppsSection(report: activeReport),
+                        const SizedBox(height: 24),
+                        if (activeReport != null)
+                          _PeriodBreakdown(
+                            report: activeReport,
+                            periodLabel: _periodLabels[_selected],
+                          ),
+                        const SizedBox(height: 24),
+                        _WrappedCTA(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const WrappedScreen()),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  final VoidCallback onSettings;
+  const _Header({required this.onSettings});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        children: [
+          Text('Screen Time Wrapped', style: AppTypography.displayBold(size: 24)),
+          const Spacer(),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined, size: 26),
+            color: SlideColors.darkText,
+            onPressed: onSettings,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickStatsRow extends StatelessWidget {
+  final UsageReport report;
+  final String periodLabel;
+  const _QuickStatsRow({required this.report, required this.periodLabel});
+
+  String _formatHours(double hours) {
+    final h = hours.floor();
+    final m = ((hours - h) * 60).round();
+    if (h == 0) return '${m}m';
+    if (m == 0) return '${h}h';
+    return '${h}h ${m}m';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _BrainScoreCard(score: report.brainScore),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _StatCard(
+                label: periodLabel,
+                value: _formatHours(report.totalHours),
+                color: SlideColors.pink,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _StatCard(
+                label: 'Top Bad App',
+                value: report.topBadApp?.appName.split(' ').first ?? '—',
+                color: SlideColors.mint,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _BrainScoreCard extends StatelessWidget {
+  final double score;
+  const _BrainScoreCard({required this.score});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      decoration: BoxDecoration(
+        color: SlideColors.periwinkle,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 2),
+        boxShadow: const [
+          BoxShadow(color: Colors.black, offset: Offset(3, 3), blurRadius: 0),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('BrainScore', style: AppTypography.label(size: 12)),
+          Center(child: BrainScoreGauge(score: score, size: 180)),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color color;
+
+  const _StatCard({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 2),
+        boxShadow: const [
+          BoxShadow(color: Colors.black, offset: Offset(3, 3), blurRadius: 0),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: AppTypography.label(size: 12)),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: AppTypography.displayBold(size: 20),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WrappedCTA extends StatelessWidget {
+  final VoidCallback onTap;
+  const _WrappedCTA({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x40000000),
+              offset: Offset(4, 4),
+              blurRadius: 8,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'YOUR ${DateTime.now().year} WRAPPED',
+                    style: AppTypography.body(
+                      size: 13,
+                      color: Colors.white70,
+                      weight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'View Your\nReport',
+                    style: AppTypography.displayBold(
+                      size: 28,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            StarburstShape(
+              fillColor: SlideColors.yellow,
+              borderColor: SlideColors.yellow,
+              size: 60,
+              points: 8,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TopAppsSection extends StatelessWidget {
+  final UsageReport? report;
+
+  const _TopAppsSection({required this.report});
+
+  String _formatTime(Duration d) {
+    final h = d.inHours;
+    final m = d.inMinutes % 60;
+    if (h == 0) return '${m}m';
+    if (m == 0) return '${h}h';
+    return '${h}h ${m}m';
+  }
+
+  double _maxTimeWidth(List<dynamic> apps, TextStyle style) {
+    var max = 0.0;
+    for (final app in apps) {
+      final tp = TextPainter(
+        text: TextSpan(text: _formatTime(app.totalTime), style: style),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      if (tp.width > max) max = tp.width;
+    }
+    return max + 2; // add small padding
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final timeStyle = AppTypography.label(size: 12);
+    final timeWidth = (report == null || report!.topApps.isEmpty)
+        ? 0.0
+        : _maxTimeWidth(report!.topApps, timeStyle);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Top Apps', style: AppTypography.body(size: 16, weight: FontWeight.w700)),
+        const SizedBox(height: 12),
+        if (report == null || report!.topApps.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text('No data yet.', style: AppTypography.label(size: 13)),
+          )
+        else
+          ...report!.topApps.asMap().entries.map((entry) {
+            final i = entry.key;
+            final app = entry.value;
+            final fraction = report!.totalScreenTime.inMilliseconds > 0
+                ? (app.totalTime.inMilliseconds / report!.totalScreenTime.inMilliseconds).clamp(0.0, 1.0)
+                : 0.0;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                    child: Text(
+                      '${i + 1}',
+                      style: AppTypography.label(size: 12, color: const Color(0xFF888888)),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          app.appName,
+                          style: AppTypography.body(size: 13, weight: FontWeight.w600),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 3),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(3),
+                          child: LinearProgressIndicator(
+                            value: fraction,
+                            minHeight: 10,
+                            backgroundColor: Colors.black.withValues(alpha: 0.1),
+                            valueColor: const AlwaysStoppedAnimation<Color>(Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: timeWidth,
+                    child: Text(
+                      _formatTime(app.totalTime),
+                      style: timeStyle,
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+      ],
+    );
+  }
+}
+
+class _PeriodBreakdown extends StatelessWidget {
+  final UsageReport report;
+  final String periodLabel;
+  const _PeriodBreakdown({required this.report, required this.periodLabel});
+
+  @override
+  Widget build(BuildContext context) {
+    final total = report.totalHours;
+    if (total == 0) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('$periodLabel\'s Breakdown', style: AppTypography.body(size: 16, weight: FontWeight.w700)),
+        const SizedBox(height: 12),
+        _BreakdownBar(
+          label: 'Bad Apps',
+          hours: report.badHours,
+          total: total,
+          color: const Color(0xFFFF6B6B),
+        ),
+        const SizedBox(height: 8),
+        _BreakdownBar(
+          label: 'Good Apps',
+          hours: report.goodHours,
+          total: total,
+          color: SlideColors.mint,
+        ),
+        const SizedBox(height: 8),
+        _BreakdownBar(
+          label: 'Neutral',
+          hours: report.totalHours - report.badHours - report.goodHours,
+          total: total,
+          color: const Color(0xFFDDDDDD),
+        ),
+      ],
+    );
+  }
+}
+
+class _BreakdownBar extends StatelessWidget {
+  final String label;
+  final double hours;
+  final double total;
+  final Color color;
+
+  const _BreakdownBar({
+    required this.label,
+    required this.hours,
+    required this.total,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final fraction = total > 0 ? (hours / total).clamp(0.0, 1.0) : 0.0;
+    final h = hours.floor();
+    final m = ((hours - h) * 60).round();
+    final timeStr = h > 0 ? '${h}h ${m}m' : '${m}m';
+
+    return Row(
+      children: [
+        SizedBox(width: 80, child: Text(label, style: AppTypography.label(size: 13))),
+        const SizedBox(width: 8),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: fraction,
+              minHeight: 10,
+              backgroundColor: Colors.black.withValues(alpha: 0.1),
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: 62,
+          child: Text(
+            timeStr,
+            style: AppTypography.label(size: 12),
+            textAlign: TextAlign.right,
+          ),
+        ),
+      ],
+    );
+  }
+}
