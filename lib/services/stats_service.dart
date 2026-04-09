@@ -1,5 +1,6 @@
 import '../models/usage_report.dart';
 import '../models/app_classification.dart';
+import '../constants/default_categories.dart';
 import 'usage_stats_service.dart';
 import 'app_info_service.dart';
 import 'category_service.dart';
@@ -43,6 +44,7 @@ class StatsService {
     // Resolve app names for all packages in the data
     final nameCache = <String, String>{};
     for (final pkg in usageMs.keys) {
+      if (DefaultCategories.excluded.contains(pkg)) continue;
       nameCache[pkg] = await _appInfo.getAppName(pkg);
     }
 
@@ -57,6 +59,7 @@ class StatsService {
 
     for (final entry in usageMs.entries) {
       final pkg = entry.key;
+      if (DefaultCategories.excluded.contains(pkg)) continue;
       final ms = entry.value;
       final category = _categories.getCategory(pkg);
       final name = nameCache[pkg] ?? pkg;

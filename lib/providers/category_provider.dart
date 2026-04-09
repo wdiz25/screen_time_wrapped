@@ -41,7 +41,9 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
 
     final installedApps = await _appInfoService.getInstalledApps();
-    _apps = installedApps.map((info) => InstalledApp(
+    _apps = installedApps
+        .where((info) => !DefaultCategories.excluded.contains(info.packageName))
+        .map((info) => InstalledApp(
       packageName: info.packageName,
       appName: info.appName,
       isHardcoded: DefaultCategories.defaults.containsKey(info.packageName),
