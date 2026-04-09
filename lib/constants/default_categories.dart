@@ -1,90 +1,24 @@
 import '../models/app_classification.dart';
 
 class DefaultCategories {
-  // Human-readable display names for known package names.
-  // Used as a fallback when the system cannot resolve the app label.
-  static const Map<String, String> displayNames = {
-    'com.ichi2.anki': 'AnkiDroid',
-    'com.instructure.candroid': 'Canvas Student',
-    'com.zwift.zwiftgame': 'Zwift',
-    'com.duolingo': 'Duolingo',
-    'com.google.android.apps.fitness': 'Google Fit',
-    'com.fitbit.FitbitMobile': 'Fitbit',
-    'com.strava': 'Strava',
-    'com.calm.android': 'Calm',
-    'com.getsomeheadspace.android': 'Headspace',
-    'com.audible.application': 'Audible',
-    'com.todoist': 'Todoist',
-    'notion.id': 'Notion',
-    'com.evernote': 'Evernote',
-    'org.khanacademy.android': 'Khan Academy',
-    'org.coursera.android': 'Coursera',
-    'com.memrise.android.memrisecompanion': 'Memrise',
-    'com.babbel.mobile.android.en': 'Babbel',
-    'air.com.rosettastone.mobile.CoursePlayer': 'Rosetta Stone',
-    'com.onepeloton.callisto': 'Peloton',
-    'com.nike.ntc': 'Nike Training Club',
-    'com.alltrails.alltrails': 'AllTrails',
-    'com.clozemaster.v2': 'Clozemaster',
-    'com.zhiliaoapp.musically': 'TikTok',
-    'com.instagram.android': 'Instagram',
-    'com.facebook.katana': 'Facebook',
-    'com.twitter.android': 'X',
-    'com.reddit.frontpage': 'Reddit',
-    'com.snapchat.android': 'Snapchat',
-    'com.pinterest': 'Pinterest',
-    'com.tumblr': 'Tumblr',
-    'com.tiktok.lite.go': 'TikTok Lite',
-    'com.vkontakte.android': 'VK',
-    'com.king.candycrushsaga': 'Candy Crush Saga',
-    'com.supercell.clashofclans': 'Clash of Clans',
-    'com.supercell.clashroyale': 'Clash Royale',
-    'com.rovio.baba': 'Angry Birds 2',
-    'com.nianticlabs.pokemongo': 'Pokémon GO',
-    'com.playrix.gardenscapes': 'Gardenscapes',
-    'com.ea.game.pvzfree_row': 'Plants vs. Zombies',
-    'com.kiloo.subwaysurf': 'Subway Surfers',
-    'com.imangi.templerun': 'Temple Run',
-    'com.google.android.apps.maps': 'Google Maps',
-    'com.spotify.music': 'Spotify',
-    'com.google.android.apps.youtube.music': 'YouTube Music',
-    'com.apple.android.music': 'Apple Music',
-    'com.whatsapp': 'WhatsApp',
-    'com.google.android.apps.messaging': 'Google Messages',
-    'com.google.android.dialer': 'Phone',
-    'com.google.android.gm': 'Gmail',
-    'com.microsoft.office.outlook': 'Outlook',
-    'com.google.android.calendar': 'Google Calendar',
-    'com.weather.Weather': 'The Weather Channel',
-    'com.yahoo.mobile.client.android.weather': 'Yahoo Weather',
-    'com.google.android.apps.photos': 'Google Photos',
-    'com.google.android.apps.docs': 'Google Docs',
-    'com.Slack': 'Slack',
-    'com.microsoft.teams': 'Microsoft Teams',
-    'us.zoom.videomeetings': 'Zoom',
-    'org.telegram.messenger': 'Telegram',
-    'com.discord': 'Discord',
-    'com.example.screen_time_wrapped': 'Screen Time Wrapped',
-    'com.accuweather.android': 'AccuWeather',
-  };
 
   // Package names that are always hidden from reports and categories.
   // These are system/background services with no meaningful screen time.
   static const Set<String> excluded = {
-    'com.google.android.apps.scone',                      // Adaptive Connectivity Services
-    'com.google.android.aicore',                          // AICore
-    'com.google.android.projection.gearhead',             // Android Auto
-    'com.google.android.apps.nexuslauncher',              // Pixel Launcher
-    'com.google.android.apps.aiwallpapers',               // AI Wallpaper
-    'com.google.android.marvin.talkback',                 // Android Accessibility Suite
-    'com.google.android.apps.restore',                    // Android Switch
-    'com.google.android.apps.accessibility.switchaccess', // Switch Access
-    'com.google.android.as',                              // Android System Intelligence
-    'com.google.android.contactkeys',                     // Android System Key Verifier
-    'com.google.android.safetycore',                      // Android SystemSafetyCore
-    'com.google.android.webview',                         // Android System WebView
-    'com.google.android.captiveportallogin',              // Captive Portal Login
-    'com.google.android.apps.wellbeing',                  // Digital Wellbeing
+    'com.google.android.apps.scone',                                // Adaptive Connectivity Services
+    'com.google.android.aicore',                                    // AICore
+    'com.google.android.projection.gearhead',                       // Android Auto
+    'com.google.android.apps.nexuslauncher',                        // Pixel Launcher
+    'com.google.android.apps.aiwallpapers',                         // AI Wallpaper
+    'com.google.android.marvin.talkback',                           // Android Accessibility Suite
+    'com.google.android.apps.restore',                              // Android Switch
+    'com.google.android.apps.accessibility.switchaccess',           // Switch Access
+    'com.google.android.as',                                        // Android System Intelligence
+    'com.google.android.contactkeys',                               // Android System Key Verifier
+    'com.google.android.safetycore',                                // Android SystemSafetyCore
+    'com.google.android.webview',                                   // Android System WebView
+    'com.google.android.captiveportallogin',                        // Captive Portal Login
+    'com.google.android.apps.wellbeing',                            // Digital Wellbeing
   };
 
   static const Map<String, AppCategory> defaults = {
@@ -110,7 +44,10 @@ class DefaultCategories {
     'com.onepeloton.callisto': AppCategory.good,                    // Peloton
     'com.nike.ntc': AppCategory.good,                               // Nike Training Club
     'com.alltrails.alltrails': AppCategory.good,                    // AllTrails
-    'com.clozemaster.v2': AppCategory.good,                         // Clozemaster    
+    'com.clozemaster.v2': AppCategory.good,                         // Clozemaster
+    'com.highmark.myhighmark': AppCategory.good,                    // My Highmark
+    'com.upmc.enterprises.myupmc': AppCategory.good,                // MyUPMC
+    
 
     // BAD APPS (social media, games)
     'com.zhiliaoapp.musically': AppCategory.bad,                    // TikTok
@@ -147,7 +84,7 @@ class DefaultCategories {
     'com.weather.Weather': AppCategory.neutral,                     // The Weather Channel
     'com.yahoo.mobile.client.android.weather': AppCategory.neutral, // Yahoo Weather
     'com.google.android.apps.photos': AppCategory.neutral,          // Google Photos
-    'com.google.android.apps.docs': AppCategory.neutral,            // Google Docs
+    'com.google.android.apps.docs': AppCategory.neutral,            // Google Drive
     'com.Slack': AppCategory.neutral,                               // Slack
     'com.microsoft.teams': AppCategory.neutral,                     // Microsoft Teams
     'us.zoom.videomeetings': AppCategory.neutral,                   // Zoom
@@ -155,5 +92,6 @@ class DefaultCategories {
     'com.discord': AppCategory.neutral,                             // Discord
     'com.accuweather.android': AppCategory.neutral,                 // AccuWeather
     'com.example.screen_time_wrapped': AppCategory.neutral,         // Screen Time Wrapped
+    'io.homeassistant.companion.android': AppCategory.neutral,      // Home Assistant
   };
 }

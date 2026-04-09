@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import '../constants/default_categories.dart';
 
 class AppInfo {
   final String packageName;
@@ -29,7 +28,7 @@ class AppInfoService {
   }
 
   /// Gets the human-readable name for a single package.
-  /// Falls back to a known-names map, then a prettified package name.
+  /// Falls back to a prettified package name if the system cannot resolve it.
   Future<String> getAppName(String packageName) async {
     try {
       final result = await _channel.invokeMethod<String>(
@@ -39,11 +38,9 @@ class AppInfoService {
       // If the native layer returned a real name (not the package name itself), use it
       if (result != null && result != packageName) return result;
     } catch (_) {
-      // fall through to lookup
+      // fall through
     }
-    // Check known display names before prettifying
-    return DefaultCategories.displayNames[packageName] ??
-        _prettifyPackageName(packageName);
+    return _prettifyPackageName(packageName);
   }
 
   /// Gets the app icon as PNG bytes, or null if unavailable.
