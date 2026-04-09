@@ -51,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return 'Good Evening';
   }
 
+  bool _shouldUseDaysHours() => _selected >= 2; // Month (2) and Year (3)
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _QuickStatsRow(
                             report: activeReport,
                             periodLabel: _periodLabels[_selected],
+                            useDaysHours: _shouldUseDaysHours(),
                           ),
                           const SizedBox(height: 24),
                         ],
@@ -143,9 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           _PeriodBreakdown(
                             report: activeReport,
                             periodLabel: _periodLabels[_selected],
+                            useDaysHours: _shouldUseDaysHours(),
                           ),
                         const SizedBox(height: 24),
-                        _TopAppsSection(report: activeReport),
+                        _TopAppsSection(report: activeReport, useDaysHours: _shouldUseDaysHours()),
                         const SizedBox(height: 24),
                         _WrappedCTA(
                           onTap: () {
@@ -195,14 +199,24 @@ class _Header extends StatelessWidget {
 class _QuickStatsRow extends StatelessWidget {
   final UsageReport report;
   final String periodLabel;
-  const _QuickStatsRow({required this.report, required this.periodLabel});
+  final bool useDaysHours;
+  const _QuickStatsRow({required this.report, required this.periodLabel, required this.useDaysHours});
 
   String _formatHours(double hours) {
-    final h = hours.floor();
-    final m = ((hours - h) * 60).round();
-    if (h == 0) return '${m}m';
-    if (m == 0) return '${h}h';
-    return '${h}h ${m}m';
+    if (useDaysHours) {
+      final totalHours = hours.floor();
+      final days = totalHours ~/ 24;
+      final remainingHours = totalHours % 24;
+      if (days == 0) return '${remainingHours}h';
+      if (remainingHours == 0) return '${days}d';
+      return '${days}d ${remainingHours}h';
+    } else {
+      final h = hours.floor();
+      final m = ((hours - h) * 60).round();
+      if (h == 0) return '${m}m';
+      if (m == 0) return '${h}h';
+      return '${h}h ${m}m';
+    }
   }
 
   @override
@@ -365,8 +379,9 @@ class _WrappedCTA extends StatelessWidget {
 
 class _TopAppsSection extends StatefulWidget {
   final UsageReport? report;
+  final bool useDaysHours;
 
-  const _TopAppsSection({required this.report});
+  const _TopAppsSection({required this.report, required this.useDaysHours});
 
   @override
   State<_TopAppsSection> createState() => _TopAppsSectionState();
@@ -376,11 +391,20 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
   bool _showAll = false;
 
   String _formatTime(Duration d) {
-    final h = d.inHours;
-    final m = d.inMinutes % 60;
-    if (h == 0) return '${m}m';
-    if (m == 0) return '${h}h';
-    return '${h}h ${m}m';
+    if (widget.useDaysHours) {
+      final h = d.inHours;
+      final days = h ~/ 24;
+      final remainingHours = h % 24;
+      if (days == 0) return '${remainingHours}h';
+      if (remainingHours == 0) return '${days}d';
+      return '${days}d ${remainingHours}h';
+    } else {
+      final h = d.inHours;
+      final m = d.inMinutes % 60;
+      if (h == 0) return '${m}m';
+      if (m == 0) return '${h}h';
+      return '${h}h ${m}m';
+    }
   }
 
   double _maxTimeWidth(List<dynamic> apps, TextStyle style) {
@@ -498,12 +522,22 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
 class _PeriodBreakdown extends StatelessWidget {
   final UsageReport report;
   final String periodLabel;
-  const _PeriodBreakdown({required this.report, required this.periodLabel});
+  final bool useDaysHours;
+  const _PeriodBreakdown({required this.report, required this.periodLabel, required this.useDaysHours});
 
   String _fmt(double hours) {
-    final h = hours.floor();
-    final m = ((hours - h) * 60).round();
-    return h > 0 ? '${h}h ${m}m' : '${m}m';
+    if (useDaysHours) {
+      final totalHours = hours.floor();
+      final days = totalHours ~/ 24;
+      final remainingHours = totalHours % 24;
+      if (days == 0) return '${remainingHours}h';
+      if (remainingHours == 0) return '${days}d';
+      return '${days}d ${remainingHours}h';
+    } else {
+      final h = hours.floor();
+      final m = ((hours - h) * 60).round();
+      return h > 0 ? '${h}h ${m}m' : '${m}m';
+    }
   }
 
   double _maxTextWidth(List<String> texts, TextStyle style) {
@@ -541,6 +575,7 @@ class _PeriodBreakdown extends StatelessWidget {
           color: const Color(0xFFFF6B6B),
           labelWidth: labelWidth,
           timeWidth: timeWidth,
+          useDaysHours: useDaysHours,
         ),
         const SizedBox(height: 8),
         _BreakdownBar(
@@ -550,6 +585,7 @@ class _PeriodBreakdown extends StatelessWidget {
           color: SlideColors.mint,
           labelWidth: labelWidth,
           timeWidth: timeWidth,
+          useDaysHours: useDaysHours,
         ),
         const SizedBox(height: 8),
         _BreakdownBar(
@@ -559,6 +595,7 @@ class _PeriodBreakdown extends StatelessWidget {
           color: const Color(0xFFDDDDDD),
           labelWidth: labelWidth,
           timeWidth: timeWidth,
+          useDaysHours: useDaysHours,
         ),
       ],
     );
@@ -572,6 +609,7 @@ class _BreakdownBar extends StatelessWidget {
   final Color color;
   final double labelWidth;
   final double timeWidth;
+  final bool useDaysHours;
 
   const _BreakdownBar({
     required this.label,
@@ -580,14 +618,24 @@ class _BreakdownBar extends StatelessWidget {
     required this.color,
     required this.labelWidth,
     required this.timeWidth,
+    required this.useDaysHours,
   });
+
+  String _formatDaysHours(int totalHours) {
+    final days = totalHours ~/ 24;
+    final remainingHours = totalHours % 24;
+    if (days == 0) return '${remainingHours}h';
+    if (remainingHours == 0) return '${days}d';
+    return '${days}d ${remainingHours}h';
+  }
 
   @override
   Widget build(BuildContext context) {
     final fraction = total > 0 ? (hours / total).clamp(0.0, 1.0) : 0.0;
     final h = hours.floor();
-    final m = ((hours - h) * 60).round();
-    final timeStr = h > 0 ? '${h}h ${m}m' : '${m}m';
+    final timeStr = useDaysHours
+        ? _formatDaysHours(h)
+        : (h > 0 ? '${h}h ${(((hours - h) * 60).round())}m' : '${(((hours - h) * 60).round())}m');
 
     return Row(
       children: [
