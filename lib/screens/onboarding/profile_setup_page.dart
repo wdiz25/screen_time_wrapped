@@ -91,7 +91,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               const SizedBox(height: 8),
               _StyledTextField(
                 controller: _hourlyRateController,
-                hint: '\$35',
+                hint: '35',
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),

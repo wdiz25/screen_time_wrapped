@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/storage_service.dart';
-import 'welcome_page.dart';
 import 'permission_page.dart';
 import 'profile_setup_page.dart';
 import '../home/home_screen.dart';
@@ -44,7 +43,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       controller: _pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        WelcomePage(onNext: _nextPage),
         PermissionPage(onNext: _nextPage),
         ProfileSetupPage(onComplete: _completeOnboarding),
       ],

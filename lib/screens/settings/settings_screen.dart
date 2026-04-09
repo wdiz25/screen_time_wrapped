@@ -177,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  '🔒 All usage data is processed on your device. No data is ever sent to any server or third party.',
+                  'All usage data is processed on your device. No data is ever sent to any server or third party.',
                   style: AppTypography.body(size: 14),
                 ),
               ),

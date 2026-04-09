@@ -49,6 +49,7 @@ class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObse
     final service = context.read<UsageStatsService>();
     final already = await service.hasPermission();
     if (already) {
+      if (mounted) setState(() => _checking = false);
       widget.onNext();
       return;
     }
@@ -103,7 +104,7 @@ class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObse
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Text(
-                        '🔒 All data stays on your device.\nNothing is sent to any server.',
+                        'All data stays on your device.\nNothing is sent to any server.',
                         style: AppTypography.body(size: 14, weight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),

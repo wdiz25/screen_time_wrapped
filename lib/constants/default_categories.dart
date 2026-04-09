@@ -7,7 +7,6 @@ class DefaultCategories {
   /// Used as a fallback when the system cannot resolve the app label.
   static const Map<String, String> displayNames = {
     'com.ichi2.anki': 'AnkiDroid',
-    'org.ankidroid.anki': 'AnkiDroid',
     'com.instructure.candroid': 'Canvas Student',
     'com.zwift.android': 'Zwift',
     'com.duolingo': 'Duolingo',
@@ -84,7 +83,6 @@ class DefaultCategories {
   static const Map<String, AppCategory> defaults = {
     // === GOOD APPS (educational, health, productivity) ===
     'com.ichi2.anki': AppCategory.good,
-    'org.ankidroid.anki': AppCategory.good,
     'com.instructure.candroid': AppCategory.good,       // Canvas
     'com.zwift.android': AppCategory.good,              // Zwift
     'com.duolingo': AppCategory.good,
