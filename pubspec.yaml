@@ -18,7 +18,10 @@ dependencies:
   shared_preferences: ^2.3.5
 
   # Android UsageStatsManager wrapper
-  usage_stats: ^1.3.1
+  usage_stats:
+    git:
+      url: https://github.com/thorito/usage_stats
+      ref: 5996be5
 
   # Google Fonts (Archivo Black + Inter)
   google_fonts: ^8.0.2
