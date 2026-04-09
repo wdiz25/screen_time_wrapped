@@ -396,7 +396,10 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
   }
 
   Color _categoryColor(AppCategory category) => switch (category) {
-    AppCategory.bad  => const Color(0xFFFF6B6B),
+    AppCategory.games  => const Color(0xFFFF6B6B),
+    AppCategory.entertainment => const Color(0xFFFF6B6B),
+    AppCategory.socialMedia => const Color(0xFFFF6B6B),
+    AppCategory.shopping => const Color(0xFFFF6B6B),
     AppCategory.good => SlideColors.mint,
     AppCategory.neutral => const Color(0xFFDDDDDD),
   };

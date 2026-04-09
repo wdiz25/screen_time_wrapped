@@ -23,75 +23,86 @@ class DefaultCategories {
 
   static const Map<String, AppCategory> defaults = {
     // GOOD APPS (productivity, fitness, learning)
-    'com.ichi2.anki': AppCategory.good,                             // AnkiDroid
-    'com.instructure.candroid': AppCategory.good,                   // Canvas Student
-    'com.zwift.zwiftgame': AppCategory.good,                        // Zwift
-    'com.duolingo': AppCategory.good,                               // Duolingo
-    'com.google.android.apps.fitness': AppCategory.good,            // Google Fit
-    'com.fitbit.FitbitMobile': AppCategory.good,                    // Fitbit
-    'com.strava': AppCategory.good,                                 // Strava
-    'com.calm.android': AppCategory.good,                           // Calm
-    'com.getsomeheadspace.android': AppCategory.good,               // Headspace
-    'com.audible.application': AppCategory.good,                    // Audible
-    'com.todoist': AppCategory.good,                                // Todoist
-    'notion.id': AppCategory.good,                                  // Notion
-    'com.evernote': AppCategory.good,                               // Evernote
-    'org.khanacademy.android': AppCategory.good,                    // Khan Academy
-    'org.coursera.android': AppCategory.good,                       // Coursera
-    'com.memrise.android.memrisecompanion': AppCategory.good,       // Memrise
-    'com.babbel.mobile.android.en': AppCategory.good,               // Babbel
-    'air.com.rosettastone.mobile.CoursePlayer': AppCategory.good,   // Rosetta Stone
-    'com.onepeloton.callisto': AppCategory.good,                    // Peloton
-    'com.nike.ntc': AppCategory.good,                               // Nike Training Club
-    'com.alltrails.alltrails': AppCategory.good,                    // AllTrails
-    'com.clozemaster.v2': AppCategory.good,                         // Clozemaster
-    'com.highmark.myhighmark': AppCategory.good,                    // My Highmark
-    'com.upmc.enterprises.myupmc': AppCategory.good,                // MyUPMC
-    
+    'com.ichi2.anki': AppCategory.good,                              // AnkiDroid
+    'com.instructure.candroid': AppCategory.good,                    // Canvas Student
+    'com.zwift.zwiftgame': AppCategory.good,                         // Zwift
+    'com.duolingo': AppCategory.good,                                // Duolingo
+    'com.google.android.apps.fitness': AppCategory.good,             // Google Fit
+    'com.fitbit.FitbitMobile': AppCategory.good,                     // Fitbit
+    'com.strava': AppCategory.good,                                  // Strava
+    'com.calm.android': AppCategory.good,                            // Calm
+    'com.getsomeheadspace.android': AppCategory.good,                // Headspace
+    'com.audible.application': AppCategory.good,                     // Audible
+    'com.todoist': AppCategory.good,                                 // Todoist
+    'notion.id': AppCategory.good,                                   // Notion
+    'com.evernote': AppCategory.good,                                // Evernote
+    'org.khanacademy.android': AppCategory.good,                     // Khan Academy
+    'org.coursera.android': AppCategory.good,                        // Coursera
+    'com.memrise.android.memrisecompanion': AppCategory.good,        // Memrise
+    'com.babbel.mobile.android.en': AppCategory.good,                // Babbel
+    'air.com.rosettastone.mobile.CoursePlayer': AppCategory.good,    // Rosetta Stone
+    'com.onepeloton.callisto': AppCategory.good,                     // Peloton
+    'com.nike.ntc': AppCategory.good,                                // Nike Training Club
+    'com.alltrails.alltrails': AppCategory.good,                     // AllTrails
+    'com.clozemaster.v2': AppCategory.good,                          // Clozemaster
+    'com.highmark.myhighmark': AppCategory.good,                     // My Highmark
+    'com.upmc.enterprises.myupmc': AppCategory.good,                 // MyUPMC
+    'com.google.android.apps.messaging': AppCategory.good,           // Google Messages
+    'com.google.android.dialer': AppCategory.good,                   // Phone
 
-    // BAD APPS (social media, games)
-    'com.zhiliaoapp.musically': AppCategory.bad,                    // TikTok
-    'com.instagram.android': AppCategory.bad,                       // Instagram
-    'com.facebook.katana': AppCategory.bad,                         // Facebook
-    'com.twitter.android': AppCategory.bad,                         // X / Twitter
-    'com.reddit.frontpage': AppCategory.bad,                        // Reddit
-    'com.snapchat.android': AppCategory.bad,                        // Snapchat
-    'com.pinterest': AppCategory.bad,                               // Pinterest
-    'com.tumblr': AppCategory.bad,                                  // Tumblr
-    'com.tiktok.lite.go': AppCategory.bad,                          // TikTok Lite
-    'com.vkontakte.android': AppCategory.bad,                       // VK
-    'com.king.candycrushsaga': AppCategory.bad,                     // Candy Crush Saga
-    'com.supercell.clashofclans': AppCategory.bad,                  // Clash of Clans
-    'com.supercell.clashroyale': AppCategory.bad,                   // Clash Royale
-    'com.rovio.baba': AppCategory.bad,                              // Angry Birds 2
-    'com.nianticlabs.pokemongo': AppCategory.bad,                   // Pokémon GO
-    'com.playrix.gardenscapes': AppCategory.bad,                    // Gardenscapes
-    'com.ea.game.pvzfree_row': AppCategory.bad,                     // Plants vs. Zombies
-    'com.kiloo.subwaysurf': AppCategory.bad,                        // Subway Surfers
-    'com.imangi.templerun': AppCategory.bad,                        // Temple Run
+    // GAMES
+    'com.king.candycrushsaga': AppCategory.games,                    // Candy Crush Saga
+    'com.supercell.clashofclans': AppCategory.games,                 // Clash of Clans
+    'com.supercell.clashroyale': AppCategory.games,                  // Clash Royale
+    'com.rovio.baba': AppCategory.games,                             // Angry Birds 2
+    'com.nianticlabs.pokemongo': AppCategory.games,                  // Pokémon GO
+    'com.playrix.gardenscapes': AppCategory.games,                   // Gardenscapes
+    'com.ea.game.pvzfree_row': AppCategory.games,                    // Plants vs. Zombies
+    'com.kiloo.subwaysurf': AppCategory.games,                       // Subway Surfers
+    'com.imangi.templerun': AppCategory.games,                       // Temple Run
+
+    // ENTERTAINMENT
+    'com.hulu.plus': AppCategory.entertainment,                      // Hulu
+    'com.netflix.mediaclient': AppCategory.entertainment,            // Netflix
+    'com.xfinity.cloudtvr': AppCategory.entertainment,               // Xfinity Stream
+
+    // SHOPPING
+    'com.amazon.mShop.android.shopping': AppCategory.shopping,       // Amazon
+
+    // SOCIAL MEDIA
+    'com.zhiliaoapp.musically': AppCategory.socialMedia,             // TikTok
+    'com.instagram.android': AppCategory.socialMedia,                // Instagram
+    'com.facebook.katana': AppCategory.socialMedia,                  // Facebook
+    'com.twitter.android': AppCategory.socialMedia,                  // X / Twitter
+    'com.reddit.frontpage': AppCategory.socialMedia,                 // Reddit
+    'com.snapchat.android': AppCategory.socialMedia,                 // Snapchat
+    'com.pinterest': AppCategory.socialMedia,                        // Pinterest
+    'com.tumblr': AppCategory.socialMedia,                           // Tumblr
+    'com.tiktok.lite.go': AppCategory.socialMedia,                   // TikTok Lite
+    'com.vkontakte.android': AppCategory.socialMedia,                // VK
 
     // NEUTRAL APPS (utilities, communication, media)
-    'com.google.android.apps.maps': AppCategory.neutral,            // Google Maps
-    'com.spotify.music': AppCategory.neutral,                       // Spotify
-    'com.google.android.apps.youtube.music': AppCategory.neutral,   // YouTube Music
-    'com.apple.android.music': AppCategory.neutral,                 // Apple Music
-    'com.whatsapp': AppCategory.neutral,                            // WhatsApp
-    'com.google.android.apps.messaging': AppCategory.neutral,       // Google Messages
-    'com.google.android.dialer': AppCategory.neutral,               // Phone
-    'com.google.android.gm': AppCategory.neutral,                   // Gmail
-    'com.microsoft.office.outlook': AppCategory.neutral,            // Outlook
-    'com.google.android.calendar': AppCategory.neutral,             // Google Calendar
-    'com.weather.Weather': AppCategory.neutral,                     // The Weather Channel
-    'com.yahoo.mobile.client.android.weather': AppCategory.neutral, // Yahoo Weather
-    'com.google.android.apps.photos': AppCategory.neutral,          // Google Photos
-    'com.google.android.apps.docs': AppCategory.neutral,            // Google Drive
-    'com.Slack': AppCategory.neutral,                               // Slack
-    'com.microsoft.teams': AppCategory.neutral,                     // Microsoft Teams
-    'us.zoom.videomeetings': AppCategory.neutral,                   // Zoom
-    'org.telegram.messenger': AppCategory.neutral,                  // Telegram
-    'com.discord': AppCategory.neutral,                             // Discord
-    'com.accuweather.android': AppCategory.neutral,                 // AccuWeather
-    'com.example.screen_time_wrapped': AppCategory.neutral,         // Screen Time Wrapped
-    'io.homeassistant.companion.android': AppCategory.neutral,      // Home Assistant
+    'com.google.android.apps.maps': AppCategory.neutral,             // Google Maps
+    'com.spotify.music': AppCategory.neutral,                        // Spotify
+    'com.google.android.apps.youtube.music': AppCategory.neutral,    // YouTube Music
+    'com.apple.android.music': AppCategory.neutral,                  // Apple Music
+    'com.whatsapp': AppCategory.neutral,                             // WhatsApp
+    'com.google.android.gm': AppCategory.neutral,                    // Gmail
+    'com.microsoft.office.outlook': AppCategory.neutral,             // Outlook
+    'com.google.android.calendar': AppCategory.neutral,              // Google Calendar
+    'com.weather.Weather': AppCategory.neutral,                      // The Weather Channel
+    'com.yahoo.mobile.client.android.weather': AppCategory.neutral,  // Yahoo Weather
+    'com.google.android.apps.photos': AppCategory.neutral,           // Google Photos
+    'com.google.android.apps.docs': AppCategory.neutral,             // Google Drive
+    'com.Slack': AppCategory.neutral,                                // Slack
+    'com.microsoft.teams': AppCategory.neutral,                      // Microsoft Teams
+    'us.zoom.videomeetings': AppCategory.neutral,                    // Zoom
+    'org.telegram.messenger': AppCategory.neutral,                   // Telegram
+    'com.discord': AppCategory.neutral,                              // Discord
+    'com.accuweather.android': AppCategory.neutral,                  // AccuWeather
+    'com.example.screen_time_wrapped': AppCategory.neutral,          // Screen Time Wrapped
+    'io.homeassistant.companion.android': AppCategory.neutral,       // Home Assistant
+    'com.azure.authenticator': AppCategory.neutral,                  // Microsoft Authenticator
+    'com.google.android.settings.intelligence': AppCategory.neutral, // Settings
   };
 }

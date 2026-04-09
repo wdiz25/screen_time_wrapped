@@ -1,12 +1,18 @@
-enum AppCategory { good, bad, neutral }
+enum AppCategory { good, games, entertainment, socialMedia, shopping, neutral }
 
 extension AppCategoryExtension on AppCategory {
   String get label {
     switch (this) {
       case AppCategory.good:
         return 'Good';
-      case AppCategory.bad:
-        return 'Bad';
+      case AppCategory.games:
+        return 'Games';
+      case AppCategory.entertainment:
+        return 'Entertainment';
+      case AppCategory.socialMedia:
+        return 'Social Media';
+      case AppCategory.shopping:
+        return 'Shopping';
       case AppCategory.neutral:
         return 'Neutral';
     }
@@ -15,8 +21,14 @@ extension AppCategoryExtension on AppCategory {
   AppCategory get next {
     switch (this) {
       case AppCategory.good:
-        return AppCategory.bad;
-      case AppCategory.bad:
+        return AppCategory.games;
+      case AppCategory.games:
+        return AppCategory.entertainment;
+      case AppCategory.entertainment:
+        return AppCategory.socialMedia;
+      case AppCategory.socialMedia:
+        return AppCategory.shopping;
+      case AppCategory.shopping:
         return AppCategory.neutral;
       case AppCategory.neutral:
         return AppCategory.good;

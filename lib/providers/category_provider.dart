@@ -31,7 +31,11 @@ class CategoryProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   List<InstalledApp> get goodApps => _apps.where((a) => a.category == AppCategory.good).toList();
-  List<InstalledApp> get badApps => _apps.where((a) => a.category == AppCategory.bad).toList();
+  List<InstalledApp> get gameApps => _apps.where((a) => a.category == AppCategory.games).toList();
+  List<InstalledApp> get entertainmentApps => _apps.where((a) => a.category == AppCategory.entertainment).toList();
+  List<InstalledApp> get socialMediaApps => _apps.where((a) => a.category == AppCategory.socialMedia).toList();
+  List<InstalledApp> get shoppingApps => _apps.where((a) => a.category == AppCategory.shopping).toList();
+  List<InstalledApp> get badApps => [...gameApps, ...entertainmentApps, ...socialMediaApps, ...shoppingApps];
   List<InstalledApp> get neutralApps => _apps.where((a) => a.category == AppCategory.neutral).toList();
 
   AppCategory getCategory(String packageName) => _categoryService.getCategory(packageName);

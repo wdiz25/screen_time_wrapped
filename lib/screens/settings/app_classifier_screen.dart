@@ -151,7 +151,10 @@ class _AppTile extends StatelessWidget {
   Color _categoryColor(AppCategory cat) {
     return switch (cat) {
       AppCategory.good => SlideColors.mint,
-      AppCategory.bad => const Color(0xFFFF6B6B),
+      AppCategory.games => const Color(0xFFFF6B6B),
+      AppCategory.entertainment => const Color(0xFFFF6B6B),
+      AppCategory.socialMedia => const Color(0xFFFF6B6B),
+      AppCategory.shopping => const Color(0xFFFF6B6B),
       AppCategory.neutral => const Color(0xFFDDDDDD),
     };
   }
@@ -159,7 +162,10 @@ class _AppTile extends StatelessWidget {
   IconData _categoryIcon(AppCategory cat) {
     return switch (cat) {
       AppCategory.good => Icons.thumb_up_outlined,
-      AppCategory.bad => Icons.thumb_down_outlined,
+      AppCategory.games => Icons.games_outlined,
+      AppCategory.entertainment => Icons.movie_outlined,
+      AppCategory.socialMedia => Icons.people_outlined,
+      AppCategory.shopping => Icons.shopping_bag_outlined,
       AppCategory.neutral => Icons.remove_circle_outline,
     };
   }

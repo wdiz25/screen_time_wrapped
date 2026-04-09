@@ -77,7 +77,10 @@ class StatsService {
         case AppCategory.good:
           goodMs += ms;
           goodApps.add(stat);
-        case AppCategory.bad:
+        case AppCategory.games:
+        case AppCategory.entertainment:
+        case AppCategory.socialMedia:
+        case AppCategory.shopping:
           badMs += ms;
           badApps.add(stat);
         case AppCategory.neutral:
