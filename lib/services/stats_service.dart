@@ -31,8 +31,8 @@ class StatsService {
 
   Future<UsageReport> buildYearlyReport() async {
     final now = DateTime.now();
-    final from = DateTime(now.year, 1, 1);
-    return _buildReport(from: from, to: now, usageMs: await _usageStats.queryYearToDate());
+    final from = now.subtract(const Duration(days: 365));
+    return _buildReport(from: from, to: now, usageMs: await _usageStats.queryLastYear());
   }
 
   Future<UsageReport> _buildReport({
@@ -66,6 +66,7 @@ class StatsService {
         packageName: pkg,
         appName: name,
         totalTime: Duration(milliseconds: ms),
+        category: category,
       );
       allApps.add(stat);
 
@@ -96,7 +97,7 @@ class StatsService {
       neutralAppTime: Duration(milliseconds: neutralMs),
       topBadApps: badApps.take(5).toList(),
       topGoodApps: goodApps.take(5).toList(),
-      topApps: allApps.take(5).toList(),
+      topApps: allApps.take(10).toList(),
       brainScore: brainScore,
     );
   }

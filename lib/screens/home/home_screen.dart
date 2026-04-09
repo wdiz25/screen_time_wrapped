@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart' as intl;
+import '../../constants/animals.dart';
+import '../../models/app_classification.dart';
 import '../../providers/usage_data_provider.dart';
 import '../../models/usage_report.dart';
 import '../../theme/slide_colors.dart';
@@ -78,13 +80,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       children: [
                         const SizedBox(height: 8),
-                        Text(
-                          _greeting(),
-                          style: AppTypography.body(size: 18, weight: FontWeight.w500),
-                        ),
-                        Text(
-                          intl.DateFormat('EEEE, MMMM d').format(DateTime.now()),
-                          style: AppTypography.body(size: 14, color: const Color(0xFF555555)),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _greeting(),
+                                  style: AppTypography.body(size: 18, weight: FontWeight.w500),
+                                ),
+                                Text(
+                                  intl.DateFormat('EEEE, MMMM d').format(DateTime.now()),
+                                  style: AppTypography.body(size: 14, color: const Color(0xFF555555)),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            if (activeReport != null)
+                              Text(
+                                animalForScore(activeReport.brainScore).emoji,
+                                style: const TextStyle(fontSize: 36),
+                              ),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         Row(
@@ -121,13 +139,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 24),
                         ],
-                        _TopAppsSection(report: activeReport),
-                        const SizedBox(height: 24),
                         if (activeReport != null)
                           _PeriodBreakdown(
                             report: activeReport,
                             periodLabel: _periodLabels[_selected],
                           ),
+                        const SizedBox(height: 24),
+                        _TopAppsSection(report: activeReport),
                         const SizedBox(height: 24),
                         _WrappedCTA(
                           onTap: () {
@@ -345,10 +363,17 @@ class _WrappedCTA extends StatelessWidget {
   }
 }
 
-class _TopAppsSection extends StatelessWidget {
+class _TopAppsSection extends StatefulWidget {
   final UsageReport? report;
 
   const _TopAppsSection({required this.report});
+
+  @override
+  State<_TopAppsSection> createState() => _TopAppsSectionState();
+}
+
+class _TopAppsSectionState extends State<_TopAppsSection> {
+  bool _showAll = false;
 
   String _formatTime(Duration d) {
     final h = d.inHours;
@@ -367,31 +392,39 @@ class _TopAppsSection extends StatelessWidget {
       )..layout();
       if (tp.width > max) max = tp.width;
     }
-    return max + 2; // add small padding
+    return max + 4; // add small padding
   }
+
+  Color _categoryColor(AppCategory category) => switch (category) {
+    AppCategory.bad  => const Color(0xFFFF6B6B),
+    AppCategory.good => SlideColors.mint,
+    AppCategory.neutral => const Color(0xFFDDDDDD),
+  };
 
   @override
   Widget build(BuildContext context) {
+    final report = widget.report;
     final timeStyle = AppTypography.label(size: 12);
-    final timeWidth = (report == null || report!.topApps.isEmpty)
-        ? 0.0
-        : _maxTimeWidth(report!.topApps, timeStyle);
+    final allApps = report?.topApps ?? [];
+    final visibleApps = allApps.take(_showAll ? 10 : 5).toList();
+    final timeWidth = visibleApps.isEmpty ? 0.0 : _maxTimeWidth(visibleApps, timeStyle);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Top Apps', style: AppTypography.body(size: 16, weight: FontWeight.w700)),
         const SizedBox(height: 12),
-        if (report == null || report!.topApps.isEmpty)
+        if (allApps.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text('No data yet.', style: AppTypography.label(size: 13)),
           )
-        else
-          ...report!.topApps.asMap().entries.map((entry) {
+        else ...[
+          ...visibleApps.asMap().entries.map((entry) {
             final i = entry.key;
             final app = entry.value;
             final fraction = report!.totalScreenTime.inMilliseconds > 0
-                ? (app.totalTime.inMilliseconds / report!.totalScreenTime.inMilliseconds).clamp(0.0, 1.0)
+                ? (app.totalTime.inMilliseconds / report.totalScreenTime.inMilliseconds).clamp(0.0, 1.0)
                 : 0.0;
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -423,7 +456,7 @@ class _TopAppsSection extends StatelessWidget {
                             value: fraction,
                             minHeight: 10,
                             backgroundColor: Colors.black.withValues(alpha: 0.1),
-                            valueColor: const AlwaysStoppedAnimation<Color>(Colors.black),
+                            valueColor: AlwaysStoppedAnimation<Color>(_categoryColor(app.category)),
                           ),
                         ),
                       ],
@@ -442,6 +475,18 @@ class _TopAppsSection extends StatelessWidget {
               ),
             );
           }),
+          if (allApps.length > 5)
+            GestureDetector(
+              onTap: () => setState(() => _showAll = !_showAll),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  _showAll ? 'Show less' : 'Show more',
+                  style: AppTypography.label(size: 13, color: const Color(0xFF555555)),
+                ),
+              ),
+            ),
+        ],
       ],
     );
   }
@@ -452,10 +497,34 @@ class _PeriodBreakdown extends StatelessWidget {
   final String periodLabel;
   const _PeriodBreakdown({required this.report, required this.periodLabel});
 
+  String _fmt(double hours) {
+    final h = hours.floor();
+    final m = ((hours - h) * 60).round();
+    return h > 0 ? '${h}h ${m}m' : '${m}m';
+  }
+
+  double _maxTextWidth(List<String> texts, TextStyle style) {
+    var max = 0.0;
+    for (final text in texts) {
+      final tp = TextPainter(
+        text: TextSpan(text: text, style: style),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      if (tp.width > max) max = tp.width;
+    }
+    return max + 4; // add small padding
+  }
+
   @override
   Widget build(BuildContext context) {
     final total = report.totalHours;
     if (total == 0) return const SizedBox.shrink();
+
+    final neutralHours = report.totalHours - report.badHours - report.goodHours;
+    final labelStyle = AppTypography.label(size: 13);
+    final timeStyle = AppTypography.label(size: 12);
+    final labelWidth = _maxTextWidth(['Bad Apps', 'Good Apps', 'Neutral'], labelStyle);
+    final timeWidth = _maxTextWidth([_fmt(report.badHours), _fmt(report.goodHours), _fmt(neutralHours)], timeStyle);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -467,6 +536,8 @@ class _PeriodBreakdown extends StatelessWidget {
           hours: report.badHours,
           total: total,
           color: const Color(0xFFFF6B6B),
+          labelWidth: labelWidth,
+          timeWidth: timeWidth,
         ),
         const SizedBox(height: 8),
         _BreakdownBar(
@@ -474,13 +545,17 @@ class _PeriodBreakdown extends StatelessWidget {
           hours: report.goodHours,
           total: total,
           color: SlideColors.mint,
+          labelWidth: labelWidth,
+          timeWidth: timeWidth,
         ),
         const SizedBox(height: 8),
         _BreakdownBar(
           label: 'Neutral',
-          hours: report.totalHours - report.badHours - report.goodHours,
+          hours: neutralHours,
           total: total,
           color: const Color(0xFFDDDDDD),
+          labelWidth: labelWidth,
+          timeWidth: timeWidth,
         ),
       ],
     );
@@ -492,12 +567,16 @@ class _BreakdownBar extends StatelessWidget {
   final double hours;
   final double total;
   final Color color;
+  final double labelWidth;
+  final double timeWidth;
 
   const _BreakdownBar({
     required this.label,
     required this.hours,
     required this.total,
     required this.color,
+    required this.labelWidth,
+    required this.timeWidth,
   });
 
   @override
@@ -509,7 +588,7 @@ class _BreakdownBar extends StatelessWidget {
 
     return Row(
       children: [
-        SizedBox(width: 80, child: Text(label, style: AppTypography.label(size: 13))),
+        SizedBox(width: labelWidth, child: Text(label, style: AppTypography.label(size: 13))),
         const SizedBox(width: 8),
         Expanded(
           child: ClipRRect(
@@ -524,7 +603,7 @@ class _BreakdownBar extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         SizedBox(
-          width: 62,
+          width: timeWidth,
           child: Text(
             timeStr,
             style: AppTypography.label(size: 12),

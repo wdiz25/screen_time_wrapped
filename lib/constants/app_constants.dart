@@ -10,7 +10,7 @@ class AppConstants {
   static const double hoursPerFriendship = 90.0;
 
   // Wealth calculation
-  static const double annualReturnRate = 0.07;
+  static const double annualReturnRate = 0.06;
   static const double defaultHourlyRate = 35.0;
 
   // BrainScore tiers

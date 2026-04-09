@@ -1,12 +1,16 @@
+import 'app_classification.dart';
+
 class AppUsageStat {
   final String packageName;
   final String appName;
   final Duration totalTime;
+  final AppCategory category;
 
   const AppUsageStat({
     required this.packageName,
     required this.appName,
     required this.totalTime,
+    required this.category,
   });
 }
 

@@ -55,11 +55,5 @@ class UsageStatsService {
 
   Future<Map<String, int>> queryLastWeek() => queryLastDays(7);
   Future<Map<String, int>> queryLastMonth() => queryLastDays(30);
-  Future<Map<String, int>> queryYearToDate() {
-    final now = DateTime.now();
-    return queryUsageMs(
-      from: DateTime(now.year, 1, 1),
-      to: now,
-    );
-  }
+  Future<Map<String, int>> queryLastYear() => queryLastDays(365);
 }

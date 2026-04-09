@@ -78,6 +78,7 @@ class DefaultCategories {
     'com.skype.raider': 'Skype',
     'org.telegram.messenger': 'Telegram',
     'com.discord': 'Discord',
+    'com.example.screen_time_wrapped': 'Screen Time Wrapped',
   };
 
   static const Map<String, AppCategory> defaults = {
@@ -158,5 +159,6 @@ class DefaultCategories {
     'com.skype.raider': AppCategory.neutral,
     'org.telegram.messenger': AppCategory.neutral,
     'com.discord': AppCategory.neutral,
+    'com.example.screen_time_wrapped': AppCategory.neutral, // For testing
   };
 }
