@@ -1,5 +1,6 @@
 import '../models/usage_report.dart';
 import '../models/app_classification.dart';
+import '../constants/app_constants.dart';
 import '../constants/default_categories.dart';
 import 'usage_stats_service.dart';
 import 'app_info_service.dart';
@@ -51,7 +52,9 @@ class StatsService {
     var totalMs = 0;
     var goodMs = 0;
     var badMs = 0;
+    var weightedBadMs = 0.0;
     var neutralMs = 0;
+    var weightedNeutralBoostMs = 0.0;
 
     final badApps = <AppUsageStat>[];
     final goodApps = <AppUsageStat>[];
@@ -82,9 +85,11 @@ class StatsService {
         case AppCategory.socialMedia:
         case AppCategory.shopping:
           badMs += ms;
+          weightedBadMs += ms * _badCategoryWeight(category);
           badApps.add(stat);
         case AppCategory.neutral:
           neutralMs += ms;
+          weightedNeutralBoostMs += ms * AppConstants.brainScoreNeutralBoostWeight;
       }
     }
 
@@ -92,7 +97,7 @@ class StatsService {
     goodApps.sort((a, b) => b.totalTime.compareTo(a.totalTime));
     allApps.sort((a, b) => b.totalTime.compareTo(a.totalTime));
 
-    final brainScore = _computeBrainScore(goodMs, badMs);
+    final brainScore = _computeBrainScore(goodMs, weightedBadMs, weightedNeutralBoostMs);
 
     return UsageReport(
       periodStart: from,
@@ -108,8 +113,25 @@ class StatsService {
     );
   }
 
-  double _computeBrainScore(int goodMs, int badMs) {
-    if (goodMs + badMs == 0) return 50.0;
-    return (goodMs / (goodMs + badMs)) * 100.0;
+  double _computeBrainScore(int goodMs, double weightedBadMs, double weightedNeutralBoostMs) {
+    if (goodMs == 0 && weightedBadMs == 0 && weightedNeutralBoostMs == 0) return 50.0;
+    final weightedGood = (goodMs * AppConstants.brainScoreGoodWeight) + weightedNeutralBoostMs;
+    final weightedBad = weightedBadMs * AppConstants.brainScoreBadWeight;
+    return (weightedGood / (weightedGood + weightedBad)) * 100.0;
+  }
+
+  double _badCategoryWeight(AppCategory category) {
+    switch (category) {
+      case AppCategory.socialMedia:
+        return AppConstants.brainScoreBadWeightSocialMedia;
+      case AppCategory.games:
+        return AppConstants.brainScoreBadWeightGames;
+      case AppCategory.shopping:
+        return AppConstants.brainScoreBadWeightShopping;
+      case AppCategory.entertainment:
+        return AppConstants.brainScoreBadWeightEntertainment;
+      default:
+        return 0.0;
+    }
   }
 }

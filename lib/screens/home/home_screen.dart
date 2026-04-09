@@ -217,7 +217,7 @@ class _QuickStatsRow extends StatelessWidget {
               child: _StatCard(
                 label: periodLabel,
                 value: _formatHours(report.totalHours),
-                color: SlideColors.pink,
+                color: SlideColors.mint,
               ),
             ),
             const SizedBox(width: 12),
@@ -225,7 +225,7 @@ class _QuickStatsRow extends StatelessWidget {
               child: _StatCard(
                 label: 'Top Bad App',
                 value: report.topBadApp?.appName.split(' ').first ?? '—',
-                color: SlideColors.mint,
+                color: SlideColors.pink,
               ),
             ),
           ],
