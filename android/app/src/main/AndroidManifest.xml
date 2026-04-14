@@ -8,7 +8,7 @@
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission"/>
     <application
-        android:label="Screen Time Wrapped"
+        android:label="Screen Time Synopsis"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

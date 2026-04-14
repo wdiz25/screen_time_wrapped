@@ -112,7 +112,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: Text(
-                            "Let's See My Wrapped",
+                            "Let's See My Synopsis",
                             style: AppTypography.body(
                               size: 18,
                               color: Colors.white,

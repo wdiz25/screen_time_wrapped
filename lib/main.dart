@@ -31,7 +31,7 @@ Future<void> main() async {
   final userProfileProvider = UserProfileProvider(storageService);
   final categoryProvider = CategoryProvider(categoryService, appInfoService);
 
-  runApp(ScreenTimeWrappedApp(
+  runApp(ScreenTimeSynopsisApp(
     storageService: storageService,
     usageStatsService: usageStatsService,
     appInfoService: appInfoService,

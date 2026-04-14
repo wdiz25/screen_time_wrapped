@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/slide_colors.dart';
 
-/// Common full-screen scaffold for all Wrapped slides.
+/// Common full-screen scaffold for all Synopsis slides.
 /// Provides background color, safe area, and optional close button.
 class SlideScaffold extends StatelessWidget {
   final Color backgroundColor;

@@ -1,4 +1,4 @@
-// Widget tests for Screen Time Wrapped
+// Widget tests for Screen Time Synopsis
 //
 // These tests require a running Android device with usage access granted.
 // Use integration_test package for full end-to-end testing.

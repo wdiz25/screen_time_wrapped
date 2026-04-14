@@ -13,7 +13,7 @@ import 'theme/app_theme.dart';
 import 'screens/onboarding/onboarding_flow.dart';
 import 'screens/home/home_screen.dart';
 
-class ScreenTimeWrappedApp extends StatelessWidget {
+class ScreenTimeSynopsisApp extends StatelessWidget {
   final StorageService storageService;
   final UsageStatsService usageStatsService;
   final AppInfoService appInfoService;
@@ -23,7 +23,7 @@ class ScreenTimeWrappedApp extends StatelessWidget {
   final UserProfileProvider userProfileProvider;
   final CategoryProvider categoryProvider;
 
-  const ScreenTimeWrappedApp({
+  const ScreenTimeSynopsisApp({
     super.key,
     required this.storageService,
     required this.usageStatsService,
@@ -58,7 +58,7 @@ class ScreenTimeWrappedApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Screen Time Wrapped',
+        title: 'Screen Time Synopsis',
         theme: buildAppTheme(),
         debugShowCheckedModeBanner: false,
         home: _RootRouter(storageService: storageService),

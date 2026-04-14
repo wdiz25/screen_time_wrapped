@@ -14,14 +14,14 @@ import 'slides/s13_death_report_slide.dart';
 import 'slides/s14_lifetime_opportunity_slide.dart';
 import 'slides/s15_animal_slide.dart';
 
-class WrappedScreen extends StatefulWidget {
-  const WrappedScreen({super.key});
+class SynopsisScreen extends StatefulWidget {
+  const SynopsisScreen({super.key});
 
   @override
-  State<WrappedScreen> createState() => _WrappedScreenState();
+  State<SynopsisScreen> createState() => _SynopsisScreenState();
 }
 
-class _WrappedScreenState extends State<WrappedScreen> {
+class _SynopsisScreenState extends State<SynopsisScreen> {
   final _pageController = PageController();
 
   @override

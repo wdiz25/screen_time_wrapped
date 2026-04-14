@@ -46,7 +46,7 @@ class S01SplashSlide extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    'WRAPPED',
+                    'SYNOPSIS',
                     style: AppTypography.displayBlack(size: 68),
                   ),
                   const SizedBox(height: 12),

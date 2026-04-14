@@ -92,7 +92,7 @@ class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObse
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Screen Time Wrapped needs access to your app usage data to calculate your BrainScore and generate your Wrapped report.',
+                      'Screen Time Synopsis needs access to your app usage data to calculate your BrainScore and generate your Synopsis report.',
                       style: AppTypography.body(size: 16),
                       textAlign: TextAlign.center,
                     ),

@@ -43,7 +43,7 @@ class DefaultCategories {
     'com.google.android.accessibility.soundamplifier',                  // Sound Amplifier
     'com.google.android.euicc',                                         // SIM Manager
     'com.google.android.settings.intelligence',                         // Settings Services
-    'com.example.screen_time_wrapped',                                  // Screen Time Wrapped
+    'com.example.screen_time_synopsis',                                  // Screen Time Synopsis
   };
 
   static const Map<String, AppCategory> defaults = {

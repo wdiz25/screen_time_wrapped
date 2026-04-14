@@ -9,7 +9,7 @@ import '../../theme/slide_colors.dart';
 import '../../theme/typography.dart';
 import '../../widgets/starburst_shape.dart';
 import '../../widgets/brain_score_gauge.dart';
-import '../wrapped/wrapped_screen.dart';
+import '../synopsis/synopsis_screen.dart';
 import '../settings/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -151,11 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 24),
                         _TopAppsSection(report: activeReport, useDaysHours: _shouldUseDaysHours()),
                         const SizedBox(height: 24),
-                        _WrappedCTA(
+                        _SynopsisCTA(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const WrappedScreen()),
+                              MaterialPageRoute(builder: (_) => const SynopsisScreen()),
                             );
                           },
                         ),
@@ -183,7 +183,7 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
-          Text('Screen Time Wrapped', style: AppTypography.displayBold(size: 24)),
+          Text('Screen Time Synopsis', style: AppTypography.displayBold(size: 24)),
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.settings_outlined, size: 26),
@@ -317,9 +317,9 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class _WrappedCTA extends StatelessWidget {
+class _SynopsisCTA extends StatelessWidget {
   final VoidCallback onTap;
-  const _WrappedCTA({required this.onTap});
+  const _SynopsisCTA({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +346,7 @@ class _WrappedCTA extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'YOUR ${DateTime.now().year} WRAPPED',
+                    'YOUR ${DateTime.now().year} SYNOPSIS',
                     style: AppTypography.body(
                       size: 13,
                       color: Colors.white70,

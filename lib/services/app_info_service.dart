@@ -8,7 +8,7 @@ class AppInfo {
 }
 
 class AppInfoService {
-  static const _channel = MethodChannel('com.example.screen_time_wrapped/app_info');
+  static const _channel = MethodChannel('com.example.screen_time_synopsis/app_info');
 
   /// Returns all user-installed apps as a list of [AppInfo].
   Future<List<AppInfo>> getInstalledApps() async {
