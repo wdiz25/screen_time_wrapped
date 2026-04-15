@@ -76,7 +76,7 @@ class S11TopBadAppSlide extends StatelessWidget {
                       Text(appName, style: AppTypography.displayBold(size: 30)),
                       const SizedBox(height: 8),
                       Text(
-                        'You spent $hours on this app this year.',
+                        'You spent $hours on this app last month.',
                         style: AppTypography.body(size: 16),
                       ),
                       if (topApp != null) ...[

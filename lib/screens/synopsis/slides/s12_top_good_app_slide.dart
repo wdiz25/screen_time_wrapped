@@ -77,7 +77,7 @@ class S12TopGoodAppSlide extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         topApp != null
-                            ? 'You invested $hours in growth this year. Well done!'
+                            ? 'You invested $hours in growth last month. Well done!'
                             : 'Try adding some growth apps to your routine!',
                         style: AppTypography.body(size: 16),
                       ),

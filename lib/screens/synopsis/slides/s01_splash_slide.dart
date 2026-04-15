@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/theme/slide_colors.dart';
 import '../../../constants/theme/typography.dart';
 import 'package:flutter_m3shapes/flutter_m3shapes.dart';
+import 'package:intl/intl.dart';
 
 class S01SplashSlide extends StatelessWidget {
   const S01SplashSlide({super.key});
@@ -50,7 +51,7 @@ class S01SplashSlide extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '${DateTime.now().year}',
+                    DateFormat.yMMMM().format(DateTime(DateTime.now().year, DateTime.now().month - 1, 1)).toUpperCase(),
                     style: AppTypography.displayBold(size: 26),
                   ),
                 ],

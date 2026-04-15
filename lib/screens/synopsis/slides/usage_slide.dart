@@ -58,7 +58,7 @@ class UsageSlide extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Your average $periodLabel usage was',
+                    periodLabel,
                     style: AppTypography.body(size: 20),
                     textAlign: TextAlign.center,
                   ),

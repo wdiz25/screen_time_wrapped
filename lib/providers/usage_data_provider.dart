@@ -15,6 +15,7 @@ class UsageDataProvider extends ChangeNotifier {
   UsageReport? _daily;
   UsageReport? _weekly;
   UsageReport? _monthly;
+  UsageReport? _previousMonth;
   UsageReport? _yearly;
   DeathReport? _deathReport;
 
@@ -30,6 +31,7 @@ class UsageDataProvider extends ChangeNotifier {
   UsageReport? get daily => _daily;
   UsageReport? get weekly => _weekly;
   UsageReport? get monthly => _monthly;
+  UsageReport? get previousMonth => _previousMonth;
   UsageReport? get yearly => _yearly;
   DeathReport? get deathReport => _deathReport;
   LoadState get state => _state;
@@ -46,13 +48,15 @@ class UsageDataProvider extends ChangeNotifier {
         _statsService.buildDailyReport(),
         _statsService.buildWeeklyReport(),
         _statsService.buildMonthlyReport(),
+        _statsService.buildPreviousMonthReport(),
         _statsService.buildYearlyReport(),
       ]);
 
       _daily = results[0];
       _weekly = results[1];
       _monthly = results[2];
-      _yearly = results[3];
+      _previousMonth = results[3];
+      _yearly = results[4];
 
       _computeDeathReport();
       _state = LoadState.loaded;
@@ -66,7 +70,8 @@ class UsageDataProvider extends ChangeNotifier {
 
   void _computeDeathReport() {
     final profile = _profileProvider.profile;
-    final dailyBadHours = _daily?.badHours ?? 0.0;
+    final numDays = _previousMonth?.periodEnd.difference(_previousMonth!.periodStart).inDays ?? 30.0;
+    final dailyBadHours = (_previousMonth?.badHours ?? 0.0) / numDays;
     if (profile == null) return;
     _deathReport = _deathReportService.compute(
       dailyBadHours: dailyBadHours,

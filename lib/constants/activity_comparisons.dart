@@ -53,13 +53,13 @@ class ActivityComparisons {
 
   // Yearly Activity Comparisons
   static const List<ActivityComparison> yearly = [
-    ActivityComparison(icon: '🏃', description: 'Trained for and run a marathon', hours: 500.0),
-    ActivityComparison(icon: '🌍', description: 'Learned a new language to conversational level', hours: 600.0),
-    ActivityComparison(icon: '🎹', description: 'Learned to play a musical instrument', hours: 1000.0),
+    ActivityComparison(icon: '🏃', description: 'Train for and run a marathon', hours: 500.0),
+    ActivityComparison(icon: '🌍', description: 'Learn a new language to conversational level', hours: 600.0),
+    ActivityComparison(icon: '🎹', description: 'Learn to play a musical instrument', hours: 1000.0),
     ActivityComparison(icon: '📚', description: 'Read over 400 novels', hours: 2800.0),
-    ActivityComparison(icon: '🚣', description: 'Crossed the Atlantic solo by rowboat', hours: 3000.0),
-    ActivityComparison(icon: '🌍', description: 'Learned 5 new languages to conversational level', hours: 3000.0),
-    ActivityComparison(icon: '👩‍🎓', description: 'Completed a 4-year college degree', hours: 4860.0),
+    ActivityComparison(icon: '🚣', description: 'Cross the Atlantic solo by rowboat', hours: 3000.0),
+    ActivityComparison(icon: '🌍', description: 'Learn 5 new languages to conversational level', hours: 3000.0),
+    ActivityComparison(icon: '👩‍🎓', description: 'Complete a 4-year college degree', hours: 4860.0),
   ];
 
   // Lifetime projections

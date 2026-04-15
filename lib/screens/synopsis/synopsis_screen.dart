@@ -52,16 +52,17 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
   }
 
   List<Widget> _buildSlides(UsageDataProvider data) {
-    final daily = data.daily;
-    final weekly = data.weekly;
-    final monthly = data.monthly;
-    final yearly = data.yearly;
+    final previousMonth = data.previousMonth;
     final death = data.deathReport;
 
-    final dailyHours = daily?.totalHours ?? 0.0;
-    final weeklyHours = weekly?.totalHours ?? 0.0;
-    final monthlyHours = monthly?.totalHours ?? 0.0;
-    final yearlyHours = yearly?.totalHours ?? 0.0;
+    // Calculate Number of Days in Month
+    final numDays = previousMonth?.periodEnd.difference(previousMonth.periodStart).inDays ?? 30.0;
+
+    // Averages Data from Previous Month
+    final monthlyHours = previousMonth?.totalHours ?? 0.0;
+    final dailyHours = monthlyHours / numDays;
+    final weeklyHours = dailyHours * 7;
+    final yearlyHours = dailyHours * 365;
 
     final wakingPercent = dailyHours > 0
         ? (dailyHours / 16.0 * 100).round()
@@ -94,10 +95,10 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       // 2 — Daily Usage
       UsageSlide(
         backgroundColor: SlideColors.yellow,
-        periodLabel: 'daily',
+        periodLabel: 'Your average daily usage was',
         hours: dailyHours,
         contextLine: wakingPercent > 50 ? 'OVER HALF' : '$wakingPercent%',
-        contextSuffix: 'your waking day spent on your phone.',
+        contextSuffix: 'of your waking day spent on your phone.',
         shapeColor1: SlideColors.pink,
         shapeColor2: SlideColors.mint,
       ),
@@ -115,7 +116,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       // 4 — Weekly Usage
       UsageSlide(
         backgroundColor: SlideColors.mint,
-        periodLabel: 'weekly',
+        periodLabel: 'Your average weekly usage was',
         hours: weeklyHours,
         contextLine: 'over ${weeklyDays.toStringAsFixed(1)} DAYS',
         contextSuffix: 'spent on your phone.',
@@ -136,7 +137,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       // 6 — Monthly Usage
       UsageSlide(
         backgroundColor: SlideColors.periwinkle,
-        periodLabel: 'monthly',
+        periodLabel: 'Your monthly usage was',
         hours: monthlyHours,
         contextLine: 'over ${monthlyDays.toStringAsFixed(1)} DAYS',
         contextSuffix: 'spent on your phone.',
@@ -157,7 +158,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       // 8 — Yearly Usage
       UsageSlide(
         backgroundColor: SlideColors.mint,
-        periodLabel: 'yearly',
+        periodLabel: 'At this rate,\n your yearly usage would be',
         hours: yearlyHours,
         contextLine: 'over ${yearlyDays.round()} DAYS',
         contextSuffix: 'spent on your phone.',
@@ -168,7 +169,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       // 9 — Yearly Opportunity
       OpportunitySlide(
         backgroundColor: SlideColors.pink,
-        periodHeader: 'IN ONE YEAR,\nYOU COULD HAVE...',
+        periodHeader: 'IN ONE YEAR,\nYOU COULD...',
         periodFooter: null,
         activities: yearlyActivities.take(3).toList(),
         shapeColor1: SlideColors.periwinkle,
@@ -176,20 +177,20 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       ),
 
       // 10 — BrainScore
-      if (yearly != null)
-        S10BrainScoreSlide(report: yearly)
+      if (previousMonth != null)
+        S10BrainScoreSlide(report: previousMonth)
       else
         const ColoredBox(color: SlideColors.yellow),
 
       // 11 — Top Bad App
-      if (yearly != null)
-        S11TopBadAppSlide(report: yearly)
+      if (previousMonth != null)
+        S11TopBadAppSlide(report: previousMonth)
       else
         const ColoredBox(color: SlideColors.periwinkle),
 
       // 12 — Top Good App
-      if (yearly != null)
-        S12TopGoodAppSlide(report: yearly)
+      if (previousMonth != null)
+        S12TopGoodAppSlide(report: previousMonth)
       else
         const ColoredBox(color: SlideColors.mint),
 
@@ -200,8 +201,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       S14LifetimeOpportunitySlide(deathReport: death),
 
       // 15 — Animal Reveal
-      if (yearly != null)
-        S15AnimalSlide(report: yearly)
+      if (previousMonth != null)
+        S15AnimalSlide(report: previousMonth)
       else
         const ColoredBox(color: SlideColors.mint),
     ];

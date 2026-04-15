@@ -387,7 +387,7 @@ class _SynopsisCTA extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'YOUR ${DateTime.now().year} SYNOPSIS',
+                    'YOUR ${intl.DateFormat.MMMM().format(DateTime(DateTime.now().year, DateTime.now().month - 1, 1)).toUpperCase()} SYNOPSIS',
                     style: AppTypography.body(
                       size: 13,
                       color: Colors.white70,

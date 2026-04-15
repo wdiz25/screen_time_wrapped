@@ -43,6 +43,17 @@ class StatsService {
     );
   }
 
+  Future<UsageReport> buildPreviousMonthReport() async {
+    final now = DateTime.now();
+    final from = DateTime(now.year, now.month - 1, 1);
+    final to = DateTime(now.year, now.month, 1).subtract(const Duration(milliseconds: 1));
+    return _buildReport(
+      from: from,
+      to: to,
+      usageMs: await _usageStats.queryPreviousMonth(),
+    );
+  }
+
   Future<UsageReport> buildYearlyReport() async {
     final now = DateTime.now();
     final from = now.subtract(const Duration(days: 365));
