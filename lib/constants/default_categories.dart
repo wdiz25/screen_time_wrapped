@@ -43,6 +43,18 @@ class DefaultCategories {
     'com.google.android.accessibility.soundamplifier',                  // Sound Amplifier
     'com.google.android.euicc',                                         // SIM Manager
     'com.google.android.settings.intelligence',                         // Settings Services
+    'com.google.android.apps.setupwizrd.searchselector',                // Search Engine Selector
+    'com.google.android.as.oss',                                        // Private Compute Services
+    'com.google.pixel.livewallpaper',                                   // Pixel Live Wallpaper
+    'com.google.android.apps.camera.services',                          // Pixel Camera Services
+    'com.google.android.networkstack',                                  // Network Manager
+    'com.google.android.apps.helprtc',                                  // Google Support Services
+    'com.google.ar.core',                                               // Google Play Services for AR
+    'com.google.android.documentsui',                                   // Files (Picker UI)
+    'com.google.android.apps.work.clouddpc',                            // Device Policy
+    'com.google.android.apps.dreamliner',                               // Pixel Stand
+    'com.google.android.apps.pixel.relationships',                      // Pixel VIPs
+    'com.google.android.apps.pixel.support',                            // Pixel Troubleshooting
     'edu.kent.honors.screen_time_synopsis',                             // Screen Time Synopsis
   };
 
