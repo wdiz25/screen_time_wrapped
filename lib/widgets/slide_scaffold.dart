@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/slide_colors.dart';
+import '../constants/theme/slide_colors.dart';
 
 /// Common full-screen scaffold for all Synopsis slides.
 /// Provides background color, safe area, and optional close button.

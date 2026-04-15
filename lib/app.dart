@@ -9,7 +9,7 @@ import 'services/death_report_service.dart';
 import 'providers/user_profile_provider.dart';
 import 'providers/category_provider.dart';
 import 'providers/usage_data_provider.dart';
-import 'theme/app_theme.dart';
+import 'constants/theme/app_theme.dart';
 import 'screens/onboarding/onboarding_flow.dart';
 import 'screens/home/home_screen.dart';
 
@@ -45,7 +45,9 @@ class ScreenTimeSynopsisApp extends StatelessWidget {
         Provider<CategoryService>.value(value: categoryService),
         Provider<StatsService>.value(value: statsService),
         Provider<DeathReportService>.value(value: deathReportService),
-        ChangeNotifierProvider<UserProfileProvider>.value(value: userProfileProvider),
+        ChangeNotifierProvider<UserProfileProvider>.value(
+          value: userProfileProvider,
+        ),
         ChangeNotifierProvider<CategoryProvider>.value(value: categoryProvider),
         ChangeNotifierProxyProvider<UserProfileProvider, UsageDataProvider>(
           create: (context) => UsageDataProvider(
@@ -54,7 +56,12 @@ class ScreenTimeSynopsisApp extends StatelessWidget {
             userProfileProvider,
           ),
           update: (context, profileProvider, previous) =>
-              previous ?? UsageDataProvider(statsService, deathReportService, profileProvider),
+              previous ??
+              UsageDataProvider(
+                statsService,
+                deathReportService,
+                profileProvider,
+              ),
         ),
       ],
       child: MaterialApp(

@@ -16,25 +16,41 @@ class StatsService {
   Future<UsageReport> buildDailyReport() async {
     final now = DateTime.now();
     final from = DateTime(now.year, now.month, now.day);
-    return _buildReport(from: from, to: now, usageMs: await _usageStats.queryToday());
+    return _buildReport(
+      from: from,
+      to: now,
+      usageMs: await _usageStats.queryToday(),
+    );
   }
 
   Future<UsageReport> buildWeeklyReport() async {
     final now = DateTime.now();
     final from = now.subtract(const Duration(days: 7));
-    return _buildReport(from: from, to: now, usageMs: await _usageStats.queryLastWeek());
+    return _buildReport(
+      from: from,
+      to: now,
+      usageMs: await _usageStats.queryLastWeek(),
+    );
   }
 
   Future<UsageReport> buildMonthlyReport() async {
     final now = DateTime.now();
     final from = now.subtract(const Duration(days: 30));
-    return _buildReport(from: from, to: now, usageMs: await _usageStats.queryLastMonth());
+    return _buildReport(
+      from: from,
+      to: now,
+      usageMs: await _usageStats.queryLastMonth(),
+    );
   }
 
   Future<UsageReport> buildYearlyReport() async {
     final now = DateTime.now();
     final from = now.subtract(const Duration(days: 365));
-    return _buildReport(from: from, to: now, usageMs: await _usageStats.queryLastYear());
+    return _buildReport(
+      from: from,
+      to: now,
+      usageMs: await _usageStats.queryLastYear(),
+    );
   }
 
   Future<UsageReport> _buildReport({
@@ -89,7 +105,8 @@ class StatsService {
           badApps.add(stat);
         case AppCategory.neutral:
           neutralMs += ms;
-          weightedNeutralBoostMs += ms * AppConstants.brainScoreNeutralBoostWeight;
+          weightedNeutralBoostMs +=
+              ms * AppConstants.brainScoreNeutralBoostWeight;
       }
     }
 
@@ -97,7 +114,11 @@ class StatsService {
     goodApps.sort((a, b) => b.totalTime.compareTo(a.totalTime));
     allApps.sort((a, b) => b.totalTime.compareTo(a.totalTime));
 
-    final brainScore = _computeBrainScore(goodMs, weightedBadMs, weightedNeutralBoostMs);
+    final brainScore = _computeBrainScore(
+      goodMs,
+      weightedBadMs,
+      weightedNeutralBoostMs,
+    );
 
     return UsageReport(
       periodStart: from,
@@ -113,9 +134,16 @@ class StatsService {
     );
   }
 
-  double _computeBrainScore(int goodMs, double weightedBadMs, double weightedNeutralBoostMs) {
-    if (goodMs == 0 && weightedBadMs == 0 && weightedNeutralBoostMs == 0) return 50.0;
-    final weightedGood = (goodMs * AppConstants.brainScoreGoodWeight) + weightedNeutralBoostMs;
+  double _computeBrainScore(
+    int goodMs,
+    double weightedBadMs,
+    double weightedNeutralBoostMs,
+  ) {
+    if (goodMs == 0 && weightedBadMs == 0 && weightedNeutralBoostMs == 0) {
+      return 50.0;
+    }
+    final weightedGood =
+        (goodMs * AppConstants.brainScoreGoodWeight) + weightedNeutralBoostMs;
     final weightedBad = weightedBadMs * AppConstants.brainScoreBadWeight;
     return (weightedGood / (weightedGood + weightedBad)) * 100.0;
   }

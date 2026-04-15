@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../../constants/activity_comparisons.dart';
-import '../../../theme/typography.dart';
+import '../../../constants/theme/typography.dart';
 import '../../../widgets/activity_pill.dart';
-import '../../../widgets/starburst_shape.dart';
-import '../../../widgets/wave_painter.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 /// Reusable opportunity cost slide.
 /// Shows: "IN [PERIOD], YOU COULD HAVE..." + 3 activity pills + optional footer.
 class OpportunitySlide extends StatelessWidget {
   final Color backgroundColor;
-  final String periodHeader;      // "IN THAT TIME,\nYOU COULD HAVE..."
-  final String? periodFooter;     // "...EVERY DAY." or null
+  final String periodHeader; // "IN THAT TIME,\nYOU COULD HAVE..."
+  final String? periodFooter; // "...EVERY DAY." or null
   final List<ActivityComparison> activities;
-  final Color decorStarColor;
-  final Color waveColor;
+  final Color shapeColor1;
+  final Color shapeColor2;
 
   const OpportunitySlide({
     super.key,
@@ -21,8 +20,8 @@ class OpportunitySlide extends StatelessWidget {
     required this.periodHeader,
     this.periodFooter,
     required this.activities,
-    required this.decorStarColor,
-    required this.waveColor,
+    required this.shapeColor1,
+    required this.shapeColor2,
   });
 
   @override
@@ -31,25 +30,27 @@ class OpportunitySlide extends StatelessWidget {
       color: backgroundColor,
       child: Stack(
         children: [
-          // Decorative wave top-right
           Positioned(
-            top: 30,
-            right: -10,
-            child: WaveStripes(
-              color: waveColor,
+            bottom: 160,
+            left: 50,
+            child: M3Container.flower(
+              color: shapeColor1,
               width: 160,
-              height: 60,
-              waveCount: 5,
+              height: 160,
+              child: const SizedBox.shrink(),
             ),
           ),
-          // Starburst bottom-left
           Positioned(
-            bottom: 80,
-            left: 16,
-            child: StarburstShape(
-              fillColor: decorStarColor,
-              size: 75,
-              points: 6,
+            top: 140,
+            right: 60,
+            child: Transform.rotate(
+              angle: -6,
+              child: M3Container.c4SidedCookie(
+                color: shapeColor2,
+                width: 160,
+                height: 160,
+                child: const SizedBox.shrink(),
+              ),
             ),
           ),
           // Main content
@@ -59,23 +60,26 @@ class OpportunitySlide extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 70),
                   child: Text(
                     periodHeader,
-                    style: AppTypography.displayBlack(size: 44),
+                    style: AppTypography.displayBlack(size: 40),
                   ),
                 ),
-                const Spacer(),
-                ...activities.map((a) => ActivityPill(icon: a.icon, text: a.description)),
+                const SizedBox(height: 100),
+                ...activities.map(
+                  (a) => ActivityPill(icon: a.icon, text: a.description),
+                ),
                 const Spacer(),
                 if (periodFooter != null)
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       periodFooter!,
-                      style: AppTypography.displayBlack(size: 36),
+                      style: AppTypography.displayBlack(size: 40),
                     ),
                   ),
+                const SizedBox(height: 40),
               ],
             ),
           ),

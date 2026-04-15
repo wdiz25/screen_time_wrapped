@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../../models/usage_report.dart';
-import '../../../theme/slide_colors.dart';
-import '../../../theme/typography.dart';
+import '../../../constants/theme/slide_colors.dart';
+import '../../../constants/theme/typography.dart';
 import '../../../widgets/brain_score_gauge.dart';
-import '../../../widgets/starburst_shape.dart';
 
 class S10BrainScoreSlide extends StatelessWidget {
   final UsageReport report;
   const S10BrainScoreSlide({super.key, required this.report});
 
   String _scoreDescription(double score) {
-    if (score >= 80) return 'You spent most of your screen time on productive apps. Keep it up!';
-    if (score >= 60) return 'A good balance — mostly growth apps with some mindless scrolling.';
-    if (score >= 40) return 'Time is split pretty evenly. Small changes to your habits could make a big difference.';
-    if (score >= 20) return 'Bad apps are winning. Your scroll habit is eating into your potential.';
+    if (score >= 80) {
+      return 'You spent most of your screen time on productive apps. Keep it up!';
+    }
+    if (score >= 60) {
+      return 'A good balance — mostly growth apps with some mindless scrolling.';
+    }
+    if (score >= 40) {
+      return 'Time is split pretty evenly. Small changes to your habits could make a big difference.';
+    }
+    if (score >= 20) {
+      return 'Bad apps are winning. Your scroll habit is eating into your potential.';
+    }
     return 'Almost all screen time went to dopamine traps. Your future self wants a word.';
   }
 
@@ -23,15 +30,6 @@ class S10BrainScoreSlide extends StatelessWidget {
       color: SlideColors.yellow,
       child: Stack(
         children: [
-          Positioned(
-            top: 24,
-            right: 24,
-            child: StarburstShape(
-              fillColor: SlideColors.pink,
-              size: 70,
-              points: 8,
-            ),
-          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -43,7 +41,7 @@ class S10BrainScoreSlide extends StatelessWidget {
                     style: AppTypography.displayBlack(size: 46),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   BrainScoreGauge(score: report.brainScore),
                   const SizedBox(height: 24),
                   Text(
@@ -56,15 +54,15 @@ class S10BrainScoreSlide extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _MiniStat(
-                        label: 'Good apps',
+                        label: 'Good Apps',
                         value: '${report.goodHours.toStringAsFixed(1)}h',
                         color: SlideColors.mint,
                       ),
                       const SizedBox(width: 16),
                       _MiniStat(
-                        label: 'Bad apps',
+                        label: 'Bad Apps',
                         value: '${report.badHours.toStringAsFixed(1)}h',
-                        color: const Color(0xFFFF6B6B),
+                        color: SlideColors.red,
                       ),
                     ],
                   ),
@@ -83,7 +81,11 @@ class _MiniStat extends StatelessWidget {
   final String value;
   final Color color;
 
-  const _MiniStat({required this.label, required this.value, required this.color});
+  const _MiniStat({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {

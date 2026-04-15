@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../models/usage_report.dart';
-import '../../../theme/slide_colors.dart';
-import '../../../theme/typography.dart';
-import '../../../widgets/starburst_shape.dart';
-import '../../../widgets/wave_painter.dart';
+import '../../../constants/theme/slide_colors.dart';
+import '../../../constants/theme/typography.dart';
 import '../format_utils.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 /// Shows the top good app (most productive app used).
 class S12TopGoodAppSlide extends StatelessWidget {
@@ -24,22 +23,23 @@ class S12TopGoodAppSlide extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 24,
-            left: 20,
-            child: StarburstShape(
-              fillColor: SlideColors.yellow,
-              size: 75,
-              points: 8,
+            top: 210,
+            left: 50,
+            child: M3Container.c12SidedCookie(
+              color: SlideColors.yellow,
+              width: 160,
+              height: 160,
+              child: const SizedBox.shrink(),
             ),
           ),
           Positioned(
-            bottom: 50,
-            right: -10,
-            child: WaveStripes(
+            bottom: 40,
+            right: 20,
+            child: M3Container.softBoom(
               color: SlideColors.pink,
-              width: 200,
-              height: 55,
-              waveCount: 6,
+              width: 240,
+              height: 240,
+              child: const SizedBox.shrink(),
             ),
           ),
           Padding(
@@ -47,6 +47,7 @@ class S12TopGoodAppSlide extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 40),
                 Text(
                   'YOUR TOP\nGOOD APP',
                   style: AppTypography.displayBlack(size: 44),
@@ -72,10 +73,7 @@ class S12TopGoodAppSlide extends StatelessWidget {
                     children: [
                       Text('🌱', style: const TextStyle(fontSize: 48)),
                       const SizedBox(height: 8),
-                      Text(
-                        appName,
-                        style: AppTypography.displayBold(size: 30),
-                      ),
+                      Text(appName, style: AppTypography.displayBold(size: 30)),
                       const SizedBox(height: 8),
                       Text(
                         topApp != null

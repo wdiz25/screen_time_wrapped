@@ -17,7 +17,8 @@ class StorageService {
     return StorageService(prefs);
   }
 
-  bool get isOnboardingComplete => _prefs.getBool(_keyOnboardingComplete) ?? false;
+  bool get isOnboardingComplete =>
+      _prefs.getBool(_keyOnboardingComplete) ?? false;
 
   Future<void> setOnboardingComplete() =>
       _prefs.setBool(_keyOnboardingComplete, true);
@@ -31,10 +32,7 @@ class StorageService {
     final birthYear = _prefs.getInt(_keyBirthYear);
     final hourlyRate = _prefs.getDouble(_keyHourlyRate);
     if (birthYear == null) return null;
-    return UserProfile(
-      birthYear: birthYear,
-      hourlyRate: hourlyRate ?? 35.0,
-    );
+    return UserProfile(birthYear: birthYear, hourlyRate: hourlyRate ?? 35.0);
   }
 
   Future<void> saveAppCategory(String packageName, AppCategory category) async {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../constants/animals.dart';
 import '../../../models/usage_report.dart';
-import '../../../theme/slide_colors.dart';
-import '../../../theme/typography.dart';
-import '../../../widgets/wave_painter.dart';
+import '../../../constants/theme/slide_colors.dart';
+import '../../../constants/theme/typography.dart';
 
 class S15AnimalSlide extends StatelessWidget {
   final UsageReport report;
@@ -17,35 +16,15 @@ class S15AnimalSlide extends StatelessWidget {
       color: SlideColors.mint,
       child: Stack(
         children: [
-          Positioned(
-            bottom: 30,
-            left: -10,
-            child: WaveStripes(
-              color: SlideColors.periwinkle,
-              width: 180,
-              height: 55,
-              waveCount: 5,
-            ),
-          ),
-          Positioned(
-            bottom: 30,
-            right: -10,
-            child: WaveStripes(
-              color: SlideColors.yellow,
-              width: 160,
-              height: 55,
-              waveCount: 5,
-            ),
-          ),
           SafeArea(
             child: Column(
               children: [
                 Expanded(
                   flex: 3,
                   child: Container(
-                    margin: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    margin: const EdgeInsets.fromLTRB(24, 48, 24, 0),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEEEEEE),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(32),
                     ),
                     child: Center(
@@ -65,7 +44,7 @@ class S15AnimalSlide extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'YOUR SCREEN\nTIME ANIMAL',
+                          'YOUR SCREEN TIME ANIMAL',
                           style: AppTypography.displayBold(size: 28),
                         ),
                         const SizedBox(height: 8),
@@ -73,6 +52,7 @@ class S15AnimalSlide extends StatelessWidget {
                           animal.name,
                           style: AppTypography.displayBlack(size: 52),
                         ),
+                        const SizedBox(height: 8),
                         Text(
                           animal.trait,
                           style: AppTypography.body(size: 17),

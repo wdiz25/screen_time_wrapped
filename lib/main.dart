@@ -24,21 +24,27 @@ Future<void> main() async {
   final usageStatsService = UsageStatsService();
   final appInfoService = AppInfoService();
   final categoryService = CategoryService(storageService);
-  final statsService = StatsService(usageStatsService, appInfoService, categoryService);
+  final statsService = StatsService(
+    usageStatsService,
+    appInfoService,
+    categoryService,
+  );
   final deathReportService = DeathReportService();
 
   // Initialize providers
   final userProfileProvider = UserProfileProvider(storageService);
   final categoryProvider = CategoryProvider(categoryService, appInfoService);
 
-  runApp(ScreenTimeSynopsisApp(
-    storageService: storageService,
-    usageStatsService: usageStatsService,
-    appInfoService: appInfoService,
-    categoryService: categoryService,
-    statsService: statsService,
-    deathReportService: deathReportService,
-    userProfileProvider: userProfileProvider,
-    categoryProvider: categoryProvider,
-  ));
+  runApp(
+    ScreenTimeSynopsisApp(
+      storageService: storageService,
+      usageStatsService: usageStatsService,
+      appInfoService: appInfoService,
+      categoryService: categoryService,
+      statsService: statsService,
+      deathReportService: deathReportService,
+      userProfileProvider: userProfileProvider,
+      categoryProvider: categoryProvider,
+    ),
+  );
 }

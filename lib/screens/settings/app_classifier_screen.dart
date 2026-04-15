@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/app_classification.dart';
 import '../../providers/category_provider.dart';
-import '../../theme/slide_colors.dart';
-import '../../theme/typography.dart';
+import '../../constants/theme/slide_colors.dart';
+import '../../constants/theme/typography.dart';
 
 class AppClassifierScreen extends StatefulWidget {
   const AppClassifierScreen({super.key});
@@ -148,28 +148,6 @@ class _AppTile extends StatelessWidget {
 
   const _AppTile({required this.app, required this.onTap});
 
-  Color _categoryColor(AppCategory cat) {
-    return switch (cat) {
-      AppCategory.good => SlideColors.mint,
-      AppCategory.games => const Color(0xFFFF6B6B),
-      AppCategory.entertainment => const Color(0xFFFF6B6B),
-      AppCategory.socialMedia => const Color(0xFFFF6B6B),
-      AppCategory.shopping => const Color(0xFFFF6B6B),
-      AppCategory.neutral => const Color(0xFFDDDDDD),
-    };
-  }
-
-  IconData _categoryIcon(AppCategory cat) {
-    return switch (cat) {
-      AppCategory.good => Icons.thumb_up_outlined,
-      AppCategory.games => Icons.games_outlined,
-      AppCategory.entertainment => Icons.movie_outlined,
-      AppCategory.socialMedia => Icons.people_outlined,
-      AppCategory.shopping => Icons.shopping_bag_outlined,
-      AppCategory.neutral => Icons.remove_circle_outline,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -204,15 +182,15 @@ class _AppTile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: app.isHardcoded
-                    ? _categoryColor(app.category).withValues(alpha: 0.5)
-                    : _categoryColor(app.category),
+                    ? app.category.color.withValues(alpha: 0.5)
+                    : app.category.color,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.black, width: 1),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(_categoryIcon(app.category), size: 14),
+                  Icon(app.category.icon, size: 14),
                   const SizedBox(width: 4),
                   Text(
                     app.category.label,

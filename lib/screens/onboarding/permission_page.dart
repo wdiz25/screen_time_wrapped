@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/usage_stats_service.dart';
-import '../../theme/slide_colors.dart';
-import '../../theme/typography.dart';
-import '../../widgets/starburst_shape.dart';
+import '../../constants/theme/slide_colors.dart';
+import '../../constants/theme/typography.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 class PermissionPage extends StatefulWidget {
   final VoidCallback onNext;
@@ -13,7 +13,8 @@ class PermissionPage extends StatefulWidget {
   State<PermissionPage> createState() => _PermissionPageState();
 }
 
-class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObserver {
+class _PermissionPageState extends State<PermissionPage>
+    with WidgetsBindingObserver {
   bool _checking = false;
 
   @override
@@ -66,13 +67,25 @@ class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObse
         child: Stack(
           children: [
             Positioned(
-              top: 20,
-              left: 20,
-              child: StarburstShape(
-                fillColor: SlideColors.pink,
-                size: 70,
-                points: 6,
+              top: 40,
+              left: 60,
+              child: M3Container.softBurst(
+                color: SlideColors.pink,
+                width: 120,
+                height: 120,
+                child: const SizedBox.shrink(),
               ),
+            ),
+            Positioned(
+              bottom: 60,
+              right: 80,
+              child: Transform.rotate(angle: 24,
+              child: M3Container.c4SidedCookie(
+                color: SlideColors.yellow,
+                width: 100,
+                height: 100,
+                child: const SizedBox.shrink(),
+              ), ),
             ),
             Center(
               child: Padding(
@@ -80,10 +93,7 @@ class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObse
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      '🔒',
-                      style: const TextStyle(fontSize: 64),
-                    ),
+                    Text('🔒', style: const TextStyle(fontSize: 64)),
                     const SizedBox(height: 24),
                     Text(
                       'ONE PERMISSION',
@@ -105,7 +115,10 @@ class _PermissionPageState extends State<PermissionPage> with WidgetsBindingObse
                       ),
                       child: Text(
                         'All data stays on your device.\nNothing is sent to any server.',
-                        style: AppTypography.body(size: 14, weight: FontWeight.w600),
+                        style: AppTypography.body(
+                          size: 14,
+                          weight: FontWeight.w600,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),

@@ -2,7 +2,11 @@ import 'package:intl/intl.dart';
 
 class FormatUtils {
   static final _numberFormat = NumberFormat('#,##0', 'en_US');
-  static final _currencyFormat = NumberFormat.currency(locale: 'en_US', symbol: '\$', decimalDigits: 0);
+  static final _currencyFormat = NumberFormat.currency(
+    locale: 'en_US',
+    symbol: '\$',
+    decimalDigits: 0,
+  );
 
   static String hours(double h) {
     if (h < 1) {

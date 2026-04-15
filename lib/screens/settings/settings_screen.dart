@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_profile_provider.dart';
-import '../../theme/slide_colors.dart';
-import '../../theme/typography.dart';
+import '../../constants/theme/slide_colors.dart';
+import '../../constants/theme/typography.dart';
 import '../../constants/app_constants.dart';
 import 'app_classifier_screen.dart';
 
@@ -42,7 +42,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final birthYear = int.tryParse(_birthYearCtrl.text);
     final hourlyRate = double.tryParse(_hourlyRateCtrl.text);
 
-    if (birthYear == null || birthYear < 1920 || birthYear > DateTime.now().year - 5) {
+    if (birthYear == null || birthYear < 1900 || birthYear > DateTime.now().year - 5) {
       _showError('Enter a valid birth year.');
       return;
     }
@@ -70,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg), backgroundColor: Colors.red.shade700),
+      SnackBar(content: Text(msg), backgroundColor: SlideColors.red),
     );
   }
 

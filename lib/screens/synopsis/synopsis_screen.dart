@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../providers/usage_data_provider.dart';
-import '../../theme/slide_colors.dart';
+import '../../constants/theme/slide_colors.dart';
 import '../../constants/activity_comparisons.dart';
 import 'slides/s01_splash_slide.dart';
 import 'slides/usage_slide.dart';
@@ -29,7 +29,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<UsageDataProvider>();
-      if (provider.state == LoadState.idle || provider.state == LoadState.error) {
+      if (provider.state == LoadState.idle ||
+          provider.state == LoadState.error) {
         provider.loadAll();
       }
     });
@@ -69,12 +70,10 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         backgroundColor: SlideColors.yellow,
         periodLabel: 'daily',
         hours: dailyHours,
-        contextLine: wakingPercent > 50
-            ? 'OVER HALF'
-            : '$wakingPercent%',
+        contextLine: wakingPercent > 50 ? 'OVER HALF' : '$wakingPercent%',
         contextSuffix: 'your waking day spent on your phone.',
-        decorStarColor: SlideColors.pink,
-        waveColor: SlideColors.mint,
+        shapeColor1: SlideColors.pink,
+        shapeColor2: SlideColors.mint,
       ),
 
       // 3 — Daily Opportunity
@@ -83,8 +82,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         periodHeader: 'IN THAT TIME,\nYOU COULD HAVE...',
         periodFooter: '...EVERY DAY.',
         activities: ActivityComparisons.daily,
-        decorStarColor: SlideColors.pink,
-        waveColor: SlideColors.yellow,
+        shapeColor1: SlideColors.pink,
+        shapeColor2: SlideColors.yellow,
       ),
 
       // 4 — Weekly Usage
@@ -94,8 +93,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         hours: weeklyHours,
         contextLine: 'over ${weeklyDays.toStringAsFixed(1)} DAYS',
         contextSuffix: 'spent on your phone.',
-        decorStarColor: SlideColors.periwinkle,
-        waveColor: SlideColors.pink,
+        shapeColor1: SlideColors.periwinkle,
+        shapeColor2: SlideColors.pink,
       ),
 
       // 5 — Weekly Opportunity
@@ -104,8 +103,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         periodHeader: 'IN ONE WEEK,\nYOU COULD HAVE...',
         periodFooter: null,
         activities: ActivityComparisons.weekly,
-        decorStarColor: SlideColors.yellow,
-        waveColor: SlideColors.mint,
+        shapeColor1: SlideColors.yellow,
+        shapeColor2: SlideColors.mint,
       ),
 
       // 6 — Monthly Usage
@@ -115,8 +114,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         hours: monthlyHours,
         contextLine: 'over ${monthlyDays.toStringAsFixed(1)} DAYS',
         contextSuffix: 'spent on your phone.',
-        decorStarColor: SlideColors.mint,
-        waveColor: SlideColors.yellow,
+        shapeColor1: SlideColors.mint,
+        shapeColor2: SlideColors.yellow,
       ),
 
       // 7 — Monthly Opportunity
@@ -125,8 +124,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         periodHeader: 'IN ONE MONTH,\nYOU COULD HAVE...',
         periodFooter: null,
         activities: ActivityComparisons.monthly,
-        decorStarColor: SlideColors.pink,
-        waveColor: SlideColors.periwinkle,
+        shapeColor1: SlideColors.pink,
+        shapeColor2: SlideColors.periwinkle,
       ),
 
       // 8 — Yearly Usage
@@ -136,8 +135,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         hours: yearlyHours,
         contextLine: 'over ${yearlyDays.round()} DAYS',
         contextSuffix: 'spent on your phone.',
-        decorStarColor: SlideColors.yellow,
-        waveColor: SlideColors.periwinkle,
+        shapeColor1: SlideColors.yellow,
+        shapeColor2: SlideColors.periwinkle,
       ),
 
       // 9 — Yearly Opportunity
@@ -146,8 +145,8 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         periodHeader: 'IN ONE YEAR,\nYOU COULD HAVE...',
         periodFooter: null,
         activities: ActivityComparisons.yearly,
-        decorStarColor: SlideColors.periwinkle,
-        waveColor: SlideColors.yellow,
+        shapeColor1: SlideColors.periwinkle,
+        shapeColor2: SlideColors.yellow,
       ),
 
       // 10 — BrainScore
@@ -200,10 +199,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
 
           return Stack(
             children: [
-              PageView(
-                controller: _pageController,
-                children: slides,
-              ),
+              PageView(controller: _pageController, children: slides),
               // Close button
               Positioned(
                 top: MediaQuery.of(context).padding.top + 12,
@@ -216,7 +212,11 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
                       color: Colors.black.withValues(alpha: 0.25),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.close, color: Colors.white, size: 22),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 22,
+                    ),
                   ),
                 ),
               ),
@@ -224,7 +224,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
               Positioned(
                 top: MediaQuery.of(context).padding.top + 16,
                 left: 0,
-                right: 60,
+                right: 0,
                 child: Center(
                   child: SmoothPageIndicator(
                     controller: _pageController,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'slide_colors.dart';
 
 class AppTypography {
   // Bold display font — used for the big impact numbers and headers
@@ -7,7 +8,7 @@ class AppTypography {
     return GoogleFonts.archivoBlack(
       fontSize: size,
       fontWeight: FontWeight.w900,
-      color: color ?? const Color(0xFF1A1A1A),
+      color: color ?? SlideColors.darkText,
       height: 1.0,
     );
   }
@@ -17,7 +18,7 @@ class AppTypography {
     return GoogleFonts.archivoBlack(
       fontSize: size,
       fontWeight: FontWeight.w900,
-      color: color ?? const Color(0xFF1A1A1A),
+      color: color ?? SlideColors.darkText,
       height: 1.1,
     );
   }
@@ -27,7 +28,7 @@ class AppTypography {
     return GoogleFonts.inter(
       fontSize: size,
       fontWeight: weight ?? FontWeight.w500,
-      color: color ?? const Color(0xFF1A1A1A),
+      color: color ?? SlideColors.darkText,
       height: 1.4,
     );
   }
@@ -37,7 +38,7 @@ class AppTypography {
     return GoogleFonts.inter(
       fontSize: size,
       fontWeight: FontWeight.w500,
-      color: color ?? const Color(0xFF1A1A1A),
+      color: color ?? SlideColors.darkText,
       height: 1.3,
     );
   }
@@ -47,7 +48,7 @@ class AppTypography {
     return GoogleFonts.inter(
       fontSize: size,
       fontWeight: FontWeight.w400,
-      color: color ?? const Color(0xFF555555),
+      color: color ?? SlideColors.lightText,
     );
   }
 }

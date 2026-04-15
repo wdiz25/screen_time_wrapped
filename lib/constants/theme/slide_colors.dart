@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
 class SlideColors {
+  static const red = Color(0xFFFF6B6B);
   static const pink = Color(0xFFF5A8C1);
   static const yellow = Color(0xFFF5C842);
   static const mint = Color(0xFF7DD9B4);
   static const periwinkle = Color(0xFFB8CAFE);
+  static const purple = Color(0xFF8888DD);
+  static const grey = Color(0xFFDDDDDD);  
+  static const darkGrey = Color(0xFF888888);
 
   // Dark text color used on all slide backgrounds
   static const darkText = Color(0xFF1A1A1A);
+  static const lightText = Color(0xFF555555);
 
   // The 15 slide background colors in order
   static const List<Color> slideBackgrounds = [

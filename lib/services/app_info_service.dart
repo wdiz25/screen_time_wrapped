@@ -8,7 +8,9 @@ class AppInfo {
 }
 
 class AppInfoService {
-  static const _channel = MethodChannel('com.example.screen_time_synopsis/app_info');
+  static const _channel = MethodChannel(
+    'edu.kent.honors.screen_time_synopsis/app_info',
+  );
 
   /// Returns all user-installed apps as a list of [AppInfo].
   Future<List<AppInfo>> getInstalledApps() async {
@@ -31,10 +33,9 @@ class AppInfoService {
   /// Falls back to a prettified package name if the system cannot resolve it.
   Future<String> getAppName(String packageName) async {
     try {
-      final result = await _channel.invokeMethod<String>(
-        'getAppName',
-        {'packageName': packageName},
-      );
+      final result = await _channel.invokeMethod<String>('getAppName', {
+        'packageName': packageName,
+      });
       // If the native layer returned a real name (not the package name itself), use it
       if (result != null && result != packageName) return result;
     } catch (_) {
@@ -46,10 +47,9 @@ class AppInfoService {
   /// Gets the app icon as PNG bytes, or null if unavailable.
   Future<Uint8List?> getAppIcon(String packageName) async {
     try {
-      final result = await _channel.invokeMethod<Uint8List>(
-        'getAppIcon',
-        {'packageName': packageName},
-      );
+      final result = await _channel.invokeMethod<Uint8List>('getAppIcon', {
+        'packageName': packageName,
+      });
       return result;
     } catch (_) {
       return null;

@@ -5,12 +5,12 @@ import '../../constants/animals.dart';
 import '../../models/app_classification.dart';
 import '../../providers/usage_data_provider.dart';
 import '../../models/usage_report.dart';
-import '../../theme/slide_colors.dart';
-import '../../theme/typography.dart';
-import '../../widgets/starburst_shape.dart';
+import '../../constants/theme/slide_colors.dart';
+import '../../constants/theme/typography.dart';
 import '../../widgets/brain_score_gauge.dart';
 import '../synopsis/synopsis_screen.dart';
 import '../settings/settings_screen.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +22,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selected = 0;
   static const _labels = ['Day', 'Week', 'Month', 'Year'];
-  static const _periodLabels = ['Today', 'This Week', 'This Month', 'This Year'];
+  static const _periodLabels = [
+    'Today',
+    'This Week',
+    'This Month',
+    'This Year',
+  ];
 
   UsageReport? _activeReport(UsageDataProvider p) => switch (_selected) {
     0 => p.daily,
@@ -60,22 +65,26 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _Header(onSettings: () async {
-              final dataProvider = context.read<UsageDataProvider>();
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-              dataProvider.invalidate();
-              await dataProvider.loadAll();
-            }),
+            _Header(
+              onSettings: () async {
+                final dataProvider = context.read<UsageDataProvider>();
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                );
+                dataProvider.invalidate();
+                await dataProvider.loadAll();
+              },
+            ),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () => context.read<UsageDataProvider>().loadAll(),
                 child: Consumer<UsageDataProvider>(
                   builder: (context, dataProvider, _) {
                     if (dataProvider.isLoading) {
-                      return const Center(child: CircularProgressIndicator(color: Colors.black));
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.black),
+                      );
                     }
                     final activeReport = _activeReport(dataProvider);
                     return ListView(
@@ -90,11 +99,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   _greeting(),
-                                  style: AppTypography.body(size: 18, weight: FontWeight.w500),
+                                  style: AppTypography.body(
+                                    size: 18,
+                                    weight: FontWeight.w500,
+                                  ),
                                 ),
                                 Text(
-                                  intl.DateFormat('EEEE, MMMM d').format(DateTime.now()),
-                                  style: AppTypography.body(size: 14, color: const Color(0xFF555555)),
+                                  intl.DateFormat(
+                                    'EEEE, MMMM d',
+                                  ).format(DateTime.now()),
+                                  style: AppTypography.body(
+                                    size: 14,
+                                    color: SlideColors.lightText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -111,21 +128,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: List.generate(_labels.length, (i) {
                             final active = i == _selected;
                             return Padding(
-                              padding: EdgeInsets.only(right: i < _labels.length - 1 ? 8 : 0),
+                              padding: EdgeInsets.only(
+                                right: i < _labels.length - 1 ? 8 : 0,
+                              ),
                               child: GestureDetector(
                                 onTap: () => setState(() => _selected = i),
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 6,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: active ? Colors.black : Colors.transparent,
+                                    color: active
+                                        ? Colors.black
+                                        : Colors.transparent,
                                     borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.black, width: 1.5),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.5,
+                                    ),
                                   ),
                                   child: Text(
                                     _labels[i],
                                     style: AppTypography.label(
                                       size: 13,
-                                      color: active ? Colors.white : Colors.black,
+                                      color: active
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                 ),
@@ -149,13 +178,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             useDaysHours: _shouldUseDaysHours(),
                           ),
                         const SizedBox(height: 24),
-                        _TopAppsSection(report: activeReport, useDaysHours: _shouldUseDaysHours()),
+                        _TopAppsSection(
+                          report: activeReport,
+                          useDaysHours: _shouldUseDaysHours(),
+                        ),
                         const SizedBox(height: 24),
                         _SynopsisCTA(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const SynopsisScreen()),
+                              MaterialPageRoute(
+                                builder: (_) => const SynopsisScreen(),
+                              ),
                             );
                           },
                         ),
@@ -183,7 +217,10 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
-          Text('Screen Time Synopsis', style: AppTypography.displayBold(size: 24)),
+          Text(
+            'Screen Time Synopsis',
+            style: AppTypography.displayBold(size: 24),
+          ),
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.settings_outlined, size: 26),
@@ -200,7 +237,11 @@ class _QuickStatsRow extends StatelessWidget {
   final UsageReport report;
   final String periodLabel;
   final bool useDaysHours;
-  const _QuickStatsRow({required this.report, required this.periodLabel, required this.useDaysHours});
+  const _QuickStatsRow({
+    required this.report,
+    required this.periodLabel,
+    required this.useDaysHours,
+  });
 
   String _formatHours(double hours) {
     if (useDaysHours) {
@@ -364,11 +405,11 @@ class _SynopsisCTA extends StatelessWidget {
                 ],
               ),
             ),
-            StarburstShape(
-              fillColor: SlideColors.yellow,
-              borderColor: SlideColors.yellow,
-              size: 60,
-              points: 8,
+            M3Container.softBurst(
+              color: SlideColors.yellow,
+              width: 60,
+              height: 60,
+              child: const SizedBox.shrink(),
             ),
           ],
         ),
@@ -419,27 +460,23 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
     return max + 4; // add small padding
   }
 
-  Color _categoryColor(AppCategory category) => switch (category) {
-    AppCategory.games  => const Color(0xFFFF6B6B),
-    AppCategory.entertainment => const Color(0xFFFF6B6B),
-    AppCategory.socialMedia => const Color(0xFFFF6B6B),
-    AppCategory.shopping => const Color(0xFFFF6B6B),
-    AppCategory.good => SlideColors.mint,
-    AppCategory.neutral => const Color(0xFFDDDDDD),
-  };
-
   @override
   Widget build(BuildContext context) {
     final report = widget.report;
     final timeStyle = AppTypography.label(size: 12);
     final allApps = report?.topApps ?? [];
     final visibleApps = allApps.take(_showAll ? 10 : 5).toList();
-    final timeWidth = visibleApps.isEmpty ? 0.0 : _maxTimeWidth(visibleApps, timeStyle);
+    final timeWidth = visibleApps.isEmpty
+        ? 0.0
+        : _maxTimeWidth(visibleApps, timeStyle);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Top Apps', style: AppTypography.body(size: 16, weight: FontWeight.w700)),
+        Text(
+          'Top Apps',
+          style: AppTypography.body(size: 16, weight: FontWeight.w700),
+        ),
         const SizedBox(height: 12),
         if (allApps.isEmpty)
           Padding(
@@ -451,7 +488,9 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
             final i = entry.key;
             final app = entry.value;
             final fraction = report!.totalScreenTime.inMilliseconds > 0
-                ? (app.totalTime.inMilliseconds / report.totalScreenTime.inMilliseconds).clamp(0.0, 1.0)
+                ? (app.totalTime.inMilliseconds /
+                          report.totalScreenTime.inMilliseconds)
+                      .clamp(0.0, 1.0)
                 : 0.0;
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -461,7 +500,10 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
                     width: 20,
                     child: Text(
                       '${i + 1}',
-                      style: AppTypography.label(size: 12, color: const Color(0xFF888888)),
+                      style: AppTypography.label(
+                        size: 12,
+                        color: SlideColors.darkGrey,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -472,7 +514,10 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
                       children: [
                         Text(
                           app.appName,
-                          style: AppTypography.body(size: 13, weight: FontWeight.w600),
+                          style: AppTypography.body(
+                            size: 13,
+                            weight: FontWeight.w600,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -482,8 +527,12 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
                           child: LinearProgressIndicator(
                             value: fraction,
                             minHeight: 10,
-                            backgroundColor: Colors.black.withValues(alpha: 0.1),
-                            valueColor: AlwaysStoppedAnimation<Color>(_categoryColor(app.category)),
+                            backgroundColor: Colors.black.withValues(
+                              alpha: 0.1,
+                            ),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              app.category.color,
+                            ),
                           ),
                         ),
                       ],
@@ -509,7 +558,10 @@ class _TopAppsSectionState extends State<_TopAppsSection> {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   _showAll ? 'Show less' : 'Show more',
-                  style: AppTypography.label(size: 13, color: const Color(0xFF555555)),
+                  style: AppTypography.label(
+                    size: 13,
+                    color: SlideColors.lightText,
+                  ),
                 ),
               ),
             ),
@@ -523,7 +575,11 @@ class _PeriodBreakdown extends StatelessWidget {
   final UsageReport report;
   final String periodLabel;
   final bool useDaysHours;
-  const _PeriodBreakdown({required this.report, required this.periodLabel, required this.useDaysHours});
+  const _PeriodBreakdown({
+    required this.report,
+    required this.periodLabel,
+    required this.useDaysHours,
+  });
 
   String _fmt(double hours) {
     if (useDaysHours) {
@@ -560,19 +616,30 @@ class _PeriodBreakdown extends StatelessWidget {
     final neutralHours = report.totalHours - report.badHours - report.goodHours;
     final labelStyle = AppTypography.label(size: 13);
     final timeStyle = AppTypography.label(size: 12);
-    final labelWidth = _maxTextWidth(['Bad Apps', 'Good Apps', 'Neutral'], labelStyle);
-    final timeWidth = _maxTextWidth([_fmt(report.badHours), _fmt(report.goodHours), _fmt(neutralHours)], timeStyle);
+    final labelWidth = _maxTextWidth([
+      'Bad Apps',
+      'Good Apps',
+      'Neutral',
+    ], labelStyle);
+    final timeWidth = _maxTextWidth([
+      _fmt(report.badHours),
+      _fmt(report.goodHours),
+      _fmt(neutralHours),
+    ], timeStyle);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('$periodLabel\'s Breakdown', style: AppTypography.body(size: 16, weight: FontWeight.w700)),
+        Text(
+          '$periodLabel\'s Breakdown',
+          style: AppTypography.body(size: 16, weight: FontWeight.w700),
+        ),
         const SizedBox(height: 12),
         _BreakdownBar(
           label: 'Bad Apps',
           hours: report.badHours,
           total: total,
-          color: const Color(0xFFFF6B6B),
+          color: SlideColors.red,
           labelWidth: labelWidth,
           timeWidth: timeWidth,
           useDaysHours: useDaysHours,
@@ -592,7 +659,7 @@ class _PeriodBreakdown extends StatelessWidget {
           label: 'Neutral',
           hours: neutralHours,
           total: total,
-          color: const Color(0xFFDDDDDD),
+          color: SlideColors.grey,
           labelWidth: labelWidth,
           timeWidth: timeWidth,
           useDaysHours: useDaysHours,
@@ -635,11 +702,16 @@ class _BreakdownBar extends StatelessWidget {
     final h = hours.floor();
     final timeStr = useDaysHours
         ? _formatDaysHours(h)
-        : (h > 0 ? '${h}h ${(((hours - h) * 60).round())}m' : '${(((hours - h) * 60).round())}m');
+        : (h > 0
+              ? '${h}h ${(((hours - h) * 60).round())}m'
+              : '${(((hours - h) * 60).round())}m');
 
     return Row(
       children: [
-        SizedBox(width: labelWidth, child: Text(label, style: AppTypography.label(size: 13))),
+        SizedBox(
+          width: labelWidth,
+          child: Text(label, style: AppTypography.label(size: 13)),
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: ClipRRect(

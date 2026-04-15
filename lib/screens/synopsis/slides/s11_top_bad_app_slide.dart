@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../models/usage_report.dart';
-import '../../../theme/slide_colors.dart';
-import '../../../theme/typography.dart';
-import '../../../widgets/starburst_shape.dart';
-import '../../../widgets/wave_painter.dart';
+import '../../../constants/theme/slide_colors.dart';
+import '../../../constants/theme/typography.dart';
 import '../format_utils.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 /// Shows the top bad app (biggest time sink).
 class S11TopBadAppSlide extends StatelessWidget {
@@ -24,22 +23,23 @@ class S11TopBadAppSlide extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 30,
-            right: 20,
-            child: WaveStripes(
-              color: SlideColors.yellow,
+            bottom: 70,
+            left: 50,
+            child: M3Container.softBurst(
+              color: SlideColors.pink,
               width: 160,
-              height: 50,
-              waveCount: 5,
+              height: 160,
+              child: const SizedBox.shrink(),
             ),
           ),
           Positioned(
-            bottom: 60,
-            right: 24,
-            child: StarburstShape(
-              fillColor: SlideColors.pink,
-              size: 80,
-              points: 6,
+            top: 140,
+            right: 20,
+            child: M3Container.softBoom(
+              color: SlideColors.mint,
+              width: 240,
+              height: 240,
+              child: const SizedBox.shrink(),
             ),
           ),
           Padding(
@@ -47,6 +47,7 @@ class S11TopBadAppSlide extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 40),
                 Text(
                   'YOUR BIGGEST\nTIME SINK',
                   style: AppTypography.displayBlack(size: 44),
@@ -72,10 +73,7 @@ class S11TopBadAppSlide extends StatelessWidget {
                     children: [
                       Text('📱', style: const TextStyle(fontSize: 48)),
                       const SizedBox(height: 8),
-                      Text(
-                        appName,
-                        style: AppTypography.displayBold(size: 30),
-                      ),
+                      Text(appName, style: AppTypography.displayBold(size: 30)),
                       const SizedBox(height: 8),
                       Text(
                         'You spent $hours on this app this year.',
@@ -87,7 +85,7 @@ class S11TopBadAppSlide extends StatelessWidget {
                           'That\'s ${FormatUtils.days(topApp.totalTime.inMinutes / 60.0)} of your life.',
                           style: AppTypography.body(
                             size: 14,
-                            color: const Color(0xFF777777),
+                            color: SlideColors.lightText,
                           ),
                         ),
                       ],

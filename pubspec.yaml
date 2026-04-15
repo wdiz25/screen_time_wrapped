@@ -1,5 +1,5 @@
 name: screen_time_synopsis
-description: "Screen Time Synopsis — Spotify Wrapped for your digital habits."
+description: "Screen Time Synopsis — An overview of your digital habits."
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -31,6 +31,9 @@ dependencies:
 
   # Number/date formatting
   intl: ^0.20.2
+
+  # Material 3 shapes
+  flutter_m3shapes: ^1.0.0+2
 
 dev_dependencies:
   flutter_test:

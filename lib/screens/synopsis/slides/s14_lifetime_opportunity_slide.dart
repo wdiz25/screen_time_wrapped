@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../models/death_report.dart';
-import '../../../theme/slide_colors.dart';
-import '../../../theme/typography.dart';
+import '../../../constants/theme/slide_colors.dart';
+import '../../../constants/theme/typography.dart';
 import '../../../widgets/activity_pill.dart';
-import '../../../widgets/starburst_shape.dart';
-import '../../../widgets/wave_painter.dart';
 import '../../../constants/activity_comparisons.dart';
 import '../format_utils.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 class S14LifetimeOpportunitySlide extends StatelessWidget {
   final DeathReport? deathReport;
@@ -21,22 +20,26 @@ class S14LifetimeOpportunitySlide extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 28,
-            right: -8,
-            child: WaveStripes(
-              color: SlideColors.mint,
+            bottom: 160,
+            left: 50,
+            child: M3Container.flower(
+              color: SlideColors.pink,
               width: 160,
-              height: 55,
-              waveCount: 5,
+              height: 160,
+              child: const SizedBox.shrink(),
             ),
           ),
           Positioned(
-            bottom: 80,
-            left: 16,
-            child: StarburstShape(
-              fillColor: SlideColors.pink,
-              size: 70,
-              points: 6,
+            top: 140,
+            right: 60,
+            child: Transform.rotate(
+              angle: -6,
+              child: M3Container.c4SidedCookie(
+                color: SlideColors.yellow,
+                width: 160,
+                height: 160,
+                child: const SizedBox.shrink(),
+              ),
             ),
           ),
           Padding(
@@ -44,24 +47,27 @@ class S14LifetimeOpportunitySlide extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 60),
                 Text(
                   'IN YOUR LIFETIME\nYOU COULD HAVE...',
                   style: AppTypography.displayBlack(size: 40),
                 ),
-                const Spacer(),
+                const SizedBox(height: 100),
                 if (report != null) ...[
                   ActivityPill(
                     icon: '💼',
-                    text: 'Started a business earning ${FormatUtils.currency(report.wealthCouldHaveBuilt)}',
+                    text:
+                        'Started a business earning ${FormatUtils.currency(report.wealthCouldHaveBuilt)}',
                   ),
                   ActivityPill(
                     icon: '📚',
-                    text: 'Read ${FormatUtils.largeHours(report.booksCouldHaveRead)} books',
+                    text:
+                        'Read ${FormatUtils.largeHours(report.booksCouldHaveRead)} books',
                   ),
                   ActivityPill(
                     icon: '🎓',
-                    text: 'Mastered ${report.skillsCouldHaveMastered.toStringAsFixed(1)} professional skills',
+                    text:
+                        'Mastered ${report.skillsCouldHaveMastered.toStringAsFixed(1)} professional skills',
                   ),
                 ] else ...[
                   ...ActivityComparisons.lifetime.map(
@@ -73,6 +79,7 @@ class S14LifetimeOpportunitySlide extends StatelessWidget {
                   '...INSTEAD OF\nSCROLLING.',
                   style: AppTypography.displayBlack(size: 36),
                 ),
+                const SizedBox(height: 40),
               ],
             ),
           ),

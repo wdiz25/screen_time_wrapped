@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../models/death_report.dart';
-import '../../../theme/slide_colors.dart';
-import '../../../theme/typography.dart';
-import '../../../widgets/starburst_shape.dart';
-import '../../../widgets/wave_painter.dart';
+import '../../../constants/theme/slide_colors.dart';
+import '../../../constants/theme/typography.dart';
 import '../format_utils.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 class S13DeathReportSlide extends StatelessWidget {
   final DeathReport? deathReport;
@@ -19,22 +18,16 @@ class S13DeathReportSlide extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 20,
-            right: 20,
-            child: StarburstShape(
-              fillColor: const Color(0xFF8888DD),
-              size: 75,
-              points: 6,
-            ),
-          ),
-          Positioned(
-            bottom: 70,
-            left: 0,
-            child: WaveStripes(
-              color: SlideColors.yellow.withGreen(150),
-              width: 220,
-              height: 55,
-              waveCount: 5,
+            bottom: 100,
+            right: 80,
+            child: Transform.rotate(
+              angle: 0.1,
+              child: M3Container.arch(
+                color: SlideColors.purple,
+                width: 170,
+                height: 200,
+                child: const SizedBox.shrink(),
+              ),
             ),
           ),
           Padding(
@@ -43,6 +36,7 @@ class S13DeathReportSlide extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 40),
                 // Skull emoji as header
                 const Text('💀', style: TextStyle(fontSize: 72)),
                 const SizedBox(height: 16),

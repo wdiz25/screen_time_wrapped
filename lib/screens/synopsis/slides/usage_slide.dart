@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../../theme/typography.dart';
-import '../../../widgets/starburst_shape.dart';
-import '../../../widgets/wave_painter.dart';
+import '../../../constants/theme/typography.dart';
 import '../format_utils.dart';
+import 'package:flutter_m3shapes/flutter_m3shapes.dart';
 
 /// Reusable usage summary slide.
 /// Shows: "Your average [period] usage was X HOURS. That's [context]."
 class UsageSlide extends StatelessWidget {
   final Color backgroundColor;
-  final String periodLabel;       // "daily", "weekly", "monthly", "yearly"
+  final String periodLabel; // "daily", "weekly", "monthly", "yearly"
   final double hours;
-  final String contextLine;       // e.g. "OVER HALF your waking day"
-  final String contextSuffix;     // e.g. "spent on your phone."
-  final Color decorStarColor;
-  final Color waveColor;
+  final String contextLine; // e.g. "OVER HALF your waking day"
+  final String contextSuffix; // e.g. "spent on your phone."
+  final Color shapeColor1;
+  final Color shapeColor2;
 
   const UsageSlide({
     super.key,
@@ -22,8 +21,8 @@ class UsageSlide extends StatelessWidget {
     required this.hours,
     required this.contextLine,
     required this.contextSuffix,
-    required this.decorStarColor,
-    required this.waveColor,
+    required this.shapeColor1,
+    required this.shapeColor2,
   });
 
   @override
@@ -33,22 +32,23 @@ class UsageSlide extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 30,
-            left: 20,
-            child: StarburstShape(
-              fillColor: decorStarColor,
-              size: 80,
-              points: 6,
+            top: 70,
+            left: 30,
+            child: M3Container.softBurst(
+              color: shapeColor1,
+              width: 200,
+              height: 200,
+              child: const SizedBox.shrink(),
             ),
           ),
           Positioned(
-            bottom: 60,
-            right: -10,
-            child: WaveStripes(
-              color: waveColor,
-              width: 200,
-              height: 55,
-              waveCount: 6,
+            bottom: 100,
+            right: 60,
+            child: M3Container.c6SidedCookie(
+              color: shapeColor2,
+              width: 150,
+              height: 150,
+              child: const SizedBox.shrink(),
             ),
           ),
           Center(
@@ -65,7 +65,7 @@ class UsageSlide extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     '${FormatUtils.largeHours(hours)} HOURS.',
-                    style: AppTypography.displayBlack(size: 58),
+                    style: AppTypography.displayBlack(size: 50),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
@@ -76,7 +76,7 @@ class UsageSlide extends StatelessWidget {
                   ),
                   Text(
                     contextLine,
-                    style: AppTypography.displayBlack(size: 44),
+                    style: AppTypography.displayBlack(size: 38),
                     textAlign: TextAlign.center,
                   ),
                   Text(

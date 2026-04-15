@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../theme/typography.dart';
-import '../theme/slide_colors.dart';
+import '../constants/theme/typography.dart';
+import '../constants/theme/slide_colors.dart';
+import '../constants/animals.dart';
 
 /// Animated arc gauge showing BrainScore from 0 to 100.
 class BrainScoreGauge extends StatefulWidget {
@@ -26,9 +27,10 @@ class _BrainScoreGaugeState extends State<BrainScoreGauge>
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     );
-    _animation = Tween<double>(begin: 0, end: widget.score).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: widget.score,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     _controller.forward();
   }
 
@@ -36,9 +38,10 @@ class _BrainScoreGaugeState extends State<BrainScoreGauge>
   void didUpdateWidget(BrainScoreGauge oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.score != widget.score) {
-      _animation = Tween<double>(begin: _animation.value, end: widget.score).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-      );
+      _animation = Tween<double>(
+        begin: _animation.value,
+        end: widget.score,
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
       _controller
         ..reset()
         ..forward();
@@ -52,21 +55,16 @@ class _BrainScoreGaugeState extends State<BrainScoreGauge>
   }
 
   Color _scoreColor(double score) {
-    const red = Color(0xFFFF6B6B);
     if (score <= 40) {
-      return Color.lerp(red, SlideColors.yellow, score / 40)!;
+      return Color.lerp(SlideColors.red, SlideColors.yellow, score / 40)!;
     } else if (score <= 70) {
-      return Color.lerp(SlideColors.yellow, SlideColors.mint, (score - 40) / 30)!;
+      return Color.lerp(
+        SlideColors.yellow,
+        SlideColors.mint,
+        (score - 40) / 30,
+      )!;
     }
     return SlideColors.mint;
-  }
-
-  String _scoreLabel(double score) {
-    if (score >= 80) return 'Eagle Brain';
-    if (score >= 60) return 'Dolphin Brain';
-    if (score >= 40) return 'Sloth Brain';
-    if (score >= 20) return 'Raccoon Brain';
-    return 'Zombie Brain';
   }
 
   @override
@@ -97,8 +95,11 @@ class _BrainScoreGaugeState extends State<BrainScoreGauge>
                     style: AppTypography.displayBlack(size: 56),
                   ),
                   Text(
-                    _scoreLabel(current),
-                    style: AppTypography.body(size: 14, weight: FontWeight.w700),
+                    "${animalForScore(current).name} Brain",
+                    style: AppTypography.body(
+                      size: 14,
+                      weight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -154,6 +155,5 @@ class _GaugePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_GaugePainter old) =>
-      old.score != score ||
-      old.fillColor != fillColor;
+      old.score != score || old.fillColor != fillColor;
 }

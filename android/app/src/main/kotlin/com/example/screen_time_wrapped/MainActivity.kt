@@ -1,4 +1,4 @@
-package com.example.screen_time_synopsis
+package edu.kent.honors.screen_time_synopsis
 
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
 
 class MainActivity : FlutterActivity() {
 
-    private val CHANNEL = "com.example.screen_time_synopsis/app_info"
+    private val CHANNEL = "edu.kent.honors.screen_time_synopsis/app_info"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

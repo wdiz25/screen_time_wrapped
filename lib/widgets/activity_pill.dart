@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/typography.dart';
+import '../constants/theme/typography.dart';
 
 /// A rounded white pill/bubble displaying an activity comparison.
 class ActivityPill extends StatelessWidget {

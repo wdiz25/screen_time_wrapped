@@ -18,10 +18,7 @@ class UsageStatsService {
     required DateTime to,
   }) async {
     try {
-      final stats = await UsageStats.queryUsageStats(
-        from,
-        to,
-      );
+      final stats = await UsageStats.queryUsageStats(from, to);
       final result = <String, int>{};
       for (final stat in stats) {
         if (stat.packageName != null && stat.totalTimeInForeground != null) {
@@ -39,10 +36,7 @@ class UsageStatsService {
 
   Future<Map<String, int>> queryToday() {
     final now = DateTime.now();
-    return queryUsageMs(
-      from: DateTime(now.year, now.month, now.day),
-      to: now,
-    );
+    return queryUsageMs(from: DateTime(now.year, now.month, now.day), to: now);
   }
 
   Future<Map<String, int>> queryLastDays(int days) {

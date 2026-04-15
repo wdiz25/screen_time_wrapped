@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../models/user_profile.dart';
 import '../../providers/user_profile_provider.dart';
-import '../../theme/slide_colors.dart';
-import '../../theme/typography.dart';
+import '../../constants/theme/slide_colors.dart';
+import '../../constants/theme/typography.dart';
 import '../../constants/app_constants.dart';
 
 class ProfileSetupPage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     final birthYear = int.tryParse(_birthYearController.text);
     final hourlyRate = double.tryParse(_hourlyRateController.text);
 
-    if (birthYear == null || birthYear < 1920 || birthYear > DateTime.now().year - 5) {
+    if (birthYear == null || birthYear < 1900 || birthYear > DateTime.now().year - 5) {
       _showError('Please enter a valid birth year.');
       return;
     }
@@ -52,7 +52,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red.shade700),
+      SnackBar(content: Text(message), backgroundColor: SlideColors.red),
     );
   }
 
