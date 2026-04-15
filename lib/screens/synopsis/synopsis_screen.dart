@@ -13,6 +13,7 @@ import 'slides/s12_top_good_app_slide.dart';
 import 'slides/s13_death_report_slide.dart';
 import 'slides/s14_lifetime_opportunity_slide.dart';
 import 'slides/s15_animal_slide.dart';
+import 'dart:async';
 
 class SynopsisScreen extends StatefulWidget {
   const SynopsisScreen({super.key});
@@ -32,6 +33,14 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
       if (provider.state == LoadState.idle ||
           provider.state == LoadState.error) {
         provider.loadAll();
+      }
+    });
+    Timer.periodic(Duration(seconds: 8), (Timer timer) {
+      if (_pageController.positions.isNotEmpty) {
+        _pageController.nextPage(
+          duration: Duration(milliseconds: 800),
+          curve: Curves.easeInOut,
+        );
       }
     });
   }
@@ -61,6 +70,23 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
     final monthlyDays = (monthlyHours / 24.0);
     final yearlyDays = (yearlyHours / 24.0);
 
+    final dailyActivities = ActivityComparisons.daily
+        .where((a) => a.hours <= dailyHours)
+        .toList();
+    final weeklyActivities = ActivityComparisons.weekly
+        .where((a) => a.hours <= weeklyHours)
+        .toList();
+    final monthlyActivities = ActivityComparisons.monthly
+        .where((a) => a.hours <= monthlyHours)
+        .toList();
+    final yearlyActivities = ActivityComparisons.yearly
+        .where((a) => a.hours <= yearlyHours)
+        .toList();
+    dailyActivities.shuffle();
+    weeklyActivities.shuffle();
+    monthlyActivities.shuffle();
+    yearlyActivities.shuffle();
+
     return [
       // 1 — Splash
       const S01SplashSlide(),
@@ -81,7 +107,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         backgroundColor: SlideColors.periwinkle,
         periodHeader: 'IN THAT TIME,\nYOU COULD HAVE...',
         periodFooter: '...EVERY DAY.',
-        activities: ActivityComparisons.daily,
+        activities: dailyActivities.take(3).toList(),
         shapeColor1: SlideColors.pink,
         shapeColor2: SlideColors.yellow,
       ),
@@ -102,7 +128,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         backgroundColor: SlideColors.pink,
         periodHeader: 'IN ONE WEEK,\nYOU COULD HAVE...',
         periodFooter: null,
-        activities: ActivityComparisons.weekly,
+        activities: weeklyActivities.take(3).toList(),
         shapeColor1: SlideColors.yellow,
         shapeColor2: SlideColors.mint,
       ),
@@ -123,7 +149,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         backgroundColor: SlideColors.yellow,
         periodHeader: 'IN ONE MONTH,\nYOU COULD HAVE...',
         periodFooter: null,
-        activities: ActivityComparisons.monthly,
+        activities: monthlyActivities.take(3).toList(),
         shapeColor1: SlideColors.pink,
         shapeColor2: SlideColors.periwinkle,
       ),
@@ -144,7 +170,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
         backgroundColor: SlideColors.pink,
         periodHeader: 'IN ONE YEAR,\nYOU COULD HAVE...',
         periodFooter: null,
-        activities: ActivityComparisons.yearly,
+        activities: yearlyActivities.take(3).toList(),
         shapeColor1: SlideColors.periwinkle,
         shapeColor2: SlideColors.yellow,
       ),
@@ -202,7 +228,7 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
               PageView(controller: _pageController, children: slides),
               // Close button
               Positioned(
-                top: MediaQuery.of(context).padding.top + 12,
+                top: MediaQuery.of(context).padding.top + 16,
                 right: 16,
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
@@ -222,17 +248,16 @@ class _SynopsisScreenState extends State<SynopsisScreen> {
               ),
               // Page indicator dots
               Positioned(
-                top: MediaQuery.of(context).padding.top + 16,
+                top: MediaQuery.of(context).padding.top + 4,
                 left: 0,
                 right: 0,
                 child: Center(
                   child: SmoothPageIndicator(
                     controller: _pageController,
                     count: slides.length,
-                    effect: const ScrollingDotsEffect(
+                    effect: ExpandingDotsEffect(
                       dotHeight: 6,
-                      dotWidth: 6,
-                      activeDotScale: 1.4,
+                      dotWidth: MediaQuery.of(context).size.width / 22,
                       spacing: 5,
                       dotColor: Colors.white38,
                       activeDotColor: Colors.white,
